@@ -1,0 +1,49 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "erb"
+require_relative "../lib/gem_kit/version"
+
+gemspec_path = File.expand_path("../gem_kit.gemspec", __dir__)
+spec = Gem::Specification.load(gemspec_path)
+
+def prompt(label, default)
+  print "#{label} [#{default}] (y/N): "
+  return default unless $stdin.gets.chomp.downcase == "y"
+
+  print "#{label}: "
+  input = $stdin.gets.chomp
+  input.empty? ? default : input
+end
+
+def prompt_script(label, current, script)
+  print "#{label} [#{current}] (y/N): "
+  return unless $stdin.gets.chomp.downcase == "y"
+
+  system(File.expand_path(script, __dir__))
+end
+
+prompt_script("Gem name", spec.name, "rename-gem")
+authors      = prompt("Authors (comma-separated)", spec.authors.join(", ")).split(",").map(&:strip)
+emails       = prompt("Emails (comma-separated)", spec.email.join(", ")).split(",").map(&:strip)
+summary      = prompt("Summary", spec.summary)
+description  = prompt("Description", spec.description.strip)
+homepage     = prompt("Homepage", spec.homepage)
+prompt_script("License", spec.license, "choose-license")
+ruby_version = prompt("Minimum Ruby version", spec.required_ruby_version.to_s.delete(">= "))
+
+# Reload spec in case rename-gem or choose-license changed things
+gemspec_path = Dir.glob(File.expand_path("../*.gemspec", __dir__)).first
+spec = Gem::Specification.load(gemspec_path)
+gem_name = spec.name
+license = spec.license
+
+template_path = gemspec_path.sub(/\.gemspec$/, ".gemspec.erb")
+output_path   = gemspec_path
+
+template = ERB.new(File.read(template_path))
+result = template.result(binding)
+
+File.write(output_path, result)
+
+puts "Updated #{File.basename(gemspec_path)}"
