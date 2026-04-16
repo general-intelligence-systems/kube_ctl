@@ -4,7 +4,7 @@
 require_relative "../lib/kube/ctl/version"
 
 local_version = Kube::Ctl::VERSION
-gem_name = "kube_ctl"
+gem_name = "kube_control"
 gemspec = "kube_ctl.gemspec"
 
 puts "Local version: #{local_version}"
