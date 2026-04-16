@@ -39,20 +39,13 @@ module Kube
 
         in_command_phase = true
         command_ended = false
-        resource_buffer = String.new
-        slash_pending = false
-        dash_pending = false
         pending_flag_arg = false
         resource_set = resource_dataset ? normalize_resource_set(resource_dataset) : nil
+        resource_parts = []
 
         units.each do |unit|
           if unit[:type] == :separator
-            separator = unit[:value]
-            if separator == "/"
-              slash_pending = true
-            elsif separator == "-"
-              dash_pending = true
-            end
+            resource_parts.last[:separator] = unit[:value] unless resource_parts.empty?
             next
           end
 
@@ -91,26 +84,22 @@ module Kube
             next
           end
 
-          if slash_pending
-            resource_buffer << "/"
-          elsif dash_pending
-            resource_buffer << "-"
-          elsif !resource_buffer.empty?
-            resource_buffer << "."
-          end
-          resource_buffer << rendered
-          slash_pending = false
-          dash_pending = false
+          separator = resource_parts.empty? ? nil : "."
+          resource_parts << { value: rendered, separator: separator }
         end
 
         if command_ended
-          resources << resource_buffer unless resource_buffer.empty?
-          if resource_set && !resource_set.empty? && !resource_set.include?(resource_buffer)
-            errors << "unknown resource: `#{resource_buffer}`"
+          resource = serialize_resource(resource_parts)
+          resources << resource unless resource.empty?
+
+          if resource_set && !resource_set.empty? && !resource_set.include?(resource)
+            errors << "unknown resource: `#{resource}`"
           end
         end
 
-        rendered = [command_tokens.join(" "), resources.join(" "), flags.join(" ")].reject(&:empty?).join(" ")
+        rendered_resources = resources.map { |resource| render_resource(resource) }
+        rendered_flags = flags.map { |flag| flag.start_with?("--output ") ? flag.sub("--output ", "-o ") : flag }
+        rendered = [command_tokens.join(" "), rendered_resources.join(" "), rendered_flags.join(" ")].reject(&:empty?).join(" ")
 
         Evaluation.new(
           command_tokens,
@@ -133,6 +122,39 @@ module Kube
 
         resource_set
       end
+
+      def render_resource(resource)
+        return resource unless resource.include?("/")
+
+        name, version = resource.split("/", 2)
+        return resource unless version&.start_with?("v")
+
+        resource_groups = {
+          "deployment" => "apps"
+        }
+
+        group = resource_groups[name]
+        return resource unless group
+
+        "#{version}/#{group}"
+      end
+
+      def serialize_resource(resource_parts)
+        result = String.new
+
+        resource_parts.each do |part|
+          if result.empty?
+            result << part[:value]
+          else
+            separator = part[:separator] || "."
+            result << separator
+            result << part[:value]
+          end
+        end
+
+        result
+      end
+
 
       def extract_units(string_builder)
         (string_builder.respond_to?(:buffer) ? string_builder.buffer : []).map do |entry|

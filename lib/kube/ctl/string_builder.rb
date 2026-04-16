@@ -1,7 +1,19 @@
-# File path: ./lib/kube/ctl/string_builder.rb
 # frozen_string_literal: true
+
 module Kube
   module Ctl
+    class MethodCallToken
+      attr_reader :base
+      attr_reader :name
+      attr_reader :args
+
+      def initialize(base, name, args)
+        @base = base
+        @name = name
+        @args = args
+      end
+    end
+
     class StringBuilder
       include Enumerable
 
@@ -37,10 +49,30 @@ module Kube
         end
       end
 
-      def -(_other)
+      def -(other)
         tap do
-          @buffer << :dash
+          case other
+          when MethodCallToken
+            @buffer << [other.base.to_s, []]
+            @buffer << :dash
+            @buffer << [other.name.to_s, other.args]
+          else
+            @buffer << [other.to_s, []] unless other.is_a?(StringBuilder)
+            @buffer << :dash
+          end
         end
+      end
+    end
+
+    class ::Integer
+      def method_missing(name, *args, &_block)
+        return super unless name.to_s.match?(/\A[a-z_][a-z0-9_]*\z/)
+
+        MethodCallToken.new(self, name, args)
+      end
+
+      def respond_to_missing?(name, include_private = false)
+        name.to_s.match?(/\A[a-z_][a-z0-9_]*\z/) || super
       end
     end
   end
