@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require "erb"
-require_relative "../lib/kube_ctl/version"
+require_relative "../lib/kube/ctl/version"
 
 gemspec_path = File.expand_path("../kube_ctl.gemspec", __dir__)
 spec = Gem::Specification.load(gemspec_path)

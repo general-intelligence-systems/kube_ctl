@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative "../lib/kube_ctl/version"
+require_relative "../lib/kube/ctl/version"
 
-local_version = KubeCtl::VERSION
+local_version = Kube::Ctl::VERSION
 gem_name = "kube_ctl"
 gemspec = "kube_ctl.gemspec"
 
