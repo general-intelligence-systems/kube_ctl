@@ -3,7 +3,7 @@
 require_relative 'lib/kube/ctl/version'
 
 Gem::Specification.new do |spec|
-  spec.name = 'kube_control'
+  spec.name = 'kube_kubectl'
   spec.version = Kube::Ctl::VERSION
   spec.authors = ['Nathan K']
   spec.email = ['nathankidd@hey.com']
