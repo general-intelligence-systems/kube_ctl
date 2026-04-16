@@ -18,7 +18,7 @@ class CommandTreeTest < Minitest::Test
   end
 
   def test_resource_with_dots_and_unknown_names
-    result = @tree.evaluate(Kube.ctl { get.cronjobs.v1.batch") })
+    result = @tree.evaluate(Kube.ctl { get.cronjobs.v1.batch })
 
     assert_equal ["get"], result.commands
     assert_equal ["cronjobs.v1.batch"], result.resources
