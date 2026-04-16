@@ -80,7 +80,11 @@ module Kube
           end
 
           if args.any?
-            flags << "--#{render_flag(token)} #{render_token(token, args).split(" ", 2).last}"
+            if args.length == 1 && args[0] == true
+              flags << "--#{render_flag(token)}"
+            else
+              flags << "--#{render_flag(token)} #{render_token(token, args).split(" ", 2).last}"
+            end
             next
           end
 
