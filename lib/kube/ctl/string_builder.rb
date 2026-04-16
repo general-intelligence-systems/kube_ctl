@@ -3,10 +3,16 @@
 module Kube
   module Ctl
     class StringBuilder
+      include Enumerable
+
       attr_reader :buffer
 
       def initialize
         @buffer = []
+      end
+
+      def each
+        yield @buffer
       end
 
       def respond_to_missing?(_name, _include_private = false)

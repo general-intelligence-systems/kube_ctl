@@ -34,6 +34,14 @@ class StringBuilderTest < Minitest::Test
     assert_equal expected, result.buffer
   end
 
+  def test_dash_operator_marks_dash_token
+    result = Kube.ctl { get.node.k8s-node }
+
+    assert_equal [
+      ["get", []], ["node", []], ["k8s", []], ["node", []], :dash
+    ], result.buffer
+  end
+
   def test_blockless_chaining
     result = Kube.ctl.get.deployment
     assert_equal [["get", []], ["deployment", []]], result.buffer
@@ -51,7 +59,7 @@ class StringBuilderTest < Minitest::Test
 
   def test_call_with_no_args_raises
     assert_raises(ArgumentError) do
-      Kube.ctl.get.call
+      Kube.ctl.get.()
     end
   end
 end
