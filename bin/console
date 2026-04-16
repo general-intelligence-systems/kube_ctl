@@ -2,7 +2,7 @@
 # frozen_string_literal: true
 
 require "bundler/setup"
-require "gem_kit"
+require "kube_ctl"
 require "irb"
 
 IRB.start(__FILE__)

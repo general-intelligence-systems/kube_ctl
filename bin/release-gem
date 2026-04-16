@@ -1,11 +1,11 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require_relative "../lib/gem_kit/version"
+require_relative "../lib/kube_ctl/version"
 
-local_version = GemKit::VERSION
-gem_name = "gem_kit"
-gemspec = "gem_kit.gemspec"
+local_version = KubeCtl::VERSION
+gem_name = "kube_ctl"
+gemspec = "kube_ctl.gemspec"
 
 puts "Local version: #{local_version}"
 

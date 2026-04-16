@@ -3,7 +3,7 @@
 
 require "fileutils"
 
-current_name = "gem_kit"
+current_name = "kube_ctl"
 
 def to_camel(snake)
   snake.split("_").map(&:capitalize).join

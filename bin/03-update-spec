@@ -2,9 +2,9 @@
 # frozen_string_literal: true
 
 require "erb"
-require_relative "../lib/gem_kit/version"
+require_relative "../lib/kube_ctl/version"
 
-gemspec_path = File.expand_path("../gem_kit.gemspec", __dir__)
+gemspec_path = File.expand_path("../kube_ctl.gemspec", __dir__)
 spec = Gem::Specification.load(gemspec_path)
 
 def prompt(label, default)
