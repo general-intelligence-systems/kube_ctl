@@ -7,5 +7,3 @@
 /pkg/
 /tmp/
 /vendor/bundle
-Gemfile.lock
-flake.lock

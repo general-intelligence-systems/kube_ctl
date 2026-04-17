@@ -1,0 +1,79 @@
+name: Release binaries
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g. v0.1.0)'
+        required: true
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: amd64
+            runner: ubuntu-24.04
+            nix-system: x86_64-linux
+          - arch: arm64
+            runner: ubuntu-24.04-arm
+            nix-system: aarch64-linux
+
+    runs-on: ${{ matrix.runner }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/nix-installer-action@main
+        with:
+          extra-conf: |
+            experimental-features = nix-command flakes
+
+      - uses: DeterminateSystems/magic-nix-cache-action@main
+
+      - name: Build binaries
+        run: |
+          nix build .#kubectl --system ${{ matrix.nix-system }} -o result-kubectl
+          nix build .#helm    --system ${{ matrix.nix-system }} -o result-helm
+          mkdir -p dist
+          cp -Lf result-kubectl/bin/kubectl dist/kubectl-linux-${{ matrix.arch }}
+          cp -Lf result-helm/bin/helm       dist/helm-linux-${{ matrix.arch }}
+          chmod +x dist/*
+
+      - name: Generate checksums
+        run: |
+          cd dist
+          sha256sum kubectl-linux-${{ matrix.arch }} helm-linux-${{ matrix.arch }} \
+            > SHA256SUMS-linux-${{ matrix.arch }}.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist-${{ matrix.arch }}
+          path: dist/*
+
+  release:
+    needs: build
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist/
+          merge-multiple: true
+
+      - name: Consolidate checksums
+        run: |
+          cd dist
+          cat SHA256SUMS-linux-*.txt > SHA256SUMS.txt
+          rm SHA256SUMS-linux-*.txt
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
