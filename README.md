@@ -179,4 +179,7 @@ Commands:
 - [kube_schema](https://github.com/general-intelligence-systems/kube_schema) -- Kubernetes resource schema validation
 - [kube_kit](https://github.com/general-intelligence-systems/kube_kit) -- Generators for kube_cluster projects
 - [kube_engine](https://github.com/general-intelligence-systems/kube_engine) -- Kubernetes engine
-- [string_builder](https://github.com/n-at-han-k/string_builder) -- The method-chain-to-string engine that powers the DSL
+
+## Built with
+
+[string_builder](https://github.com/n-at-han-k/string_builder) -- captures Ruby method chains into a buffer and serializes them to strings. The entire DSL above is powered by it. See the [examples](https://github.com/n-at-han-k/string_builder/tree/main/examples) for more ideas on what you can build.
