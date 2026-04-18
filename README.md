@@ -7,6 +7,19 @@ Kube.ctl { get.pods.o(:wide) }
 # => "get pods -o wide"
 ```
 
+## Contents
+
+- [Install](#install)
+- [The DSL](#the-dsl)
+  - [Full deployment in 31 lines](#full-deployment-in-31-lines)
+  - [Helm](#helm)
+  - [Kubeconfig scoping](#kubeconfig-scoping)
+  - [REPL](#repl)
+- [The CLI](#the-cli)
+  - [Plugin system](#plugin-system)
+- [Related projects](#related-projects)
+- [Built with](#built-with)
+
 ## Install
 
 ```
