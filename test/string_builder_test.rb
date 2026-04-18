@@ -873,10 +873,10 @@ class CommandTreeTest < Minitest::Test
     assert_string(result, "kubectl logs nginx")
   end
 
-  def test_kubectl_logs_lapp_nginx
+  def test_kubectl_logs_l_app_nginx
     result = Kube.ctl { logs.l(app: :nginx) }
     assert_buffer(result, [["logs", []], ["l", [{app: :nginx}]]])
-    assert_string(result, "kubectl logs -lapp=nginx")
+    assert_string(result, "kubectl logs -l app=nginx")
   end
 
   def test_kubectl_logs_p_c_ruby_web_1
@@ -1219,7 +1219,7 @@ class CommandTreeTest < Minitest::Test
   def test_kubectl_set_resources_deployment_nginx_c_nginx_limits_cpu_200m_memory_512mi
     result = Kube.ctl { set.resources.deployment.nginx.c(:nginx).limits('cpu=200m,memory=512Mi') }
     assert_buffer(result, [["set", []], ["resources", []], ["deployment", []], ["nginx", []], ["c", [:nginx]], ["limits", ["cpu=200m,memory=512Mi"]]])
-    assert_string(result, "kubectl set resources deployment nginx -c=nginx --limits=cpu=200m,memory=512Mi")
+    assert_string(result, "kubectl set resources deployment nginx -c nginx --limits=cpu=200m,memory=512Mi")
   end
 
   def test_kubectl_set_resources_deployment_nginx_limits_cpu_200m_memory_512mi_requests_cpu_100m_memory_256mi

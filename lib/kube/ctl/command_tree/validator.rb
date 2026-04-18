@@ -2,7 +2,7 @@ require 'shellwords'
 
 module Kube
   module Ctl
-    module CommandTree
+    class CommandTree
       class Validator
         Result = Struct.new(:valid?, :resolved_path, :positional, :flags, :errors)
 

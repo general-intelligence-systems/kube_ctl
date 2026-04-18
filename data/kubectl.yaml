@@ -9169,6 +9169,23 @@ toplevelcommandgroups:
         --to-revision=3\n  \n  # Rollback to the previous deployment with dry-run\n
         \ kubectl rollout undo --dry-run=true deployment/abc"
       usage: undo (TYPE NAME | TYPE/NAME) [flags]
+    - name: restart
+      path: restart
+      synopsis: Restart a resource
+      description: Restart a resource.
+      options:
+      - name: selector
+        shorthand: l
+        usage: Selector (label query) to filter on
+      - name: filename
+        shorthand: f
+        default_value: '[]'
+        usage: Filename, directory, or URL to files identifying the resource to restart
+      inherited_options:
+      - name: namespace
+        shorthand: "n"
+        usage: If present, the namespace scope for this CLI request
+      usage: restart (TYPE NAME | TYPE/NAME) [flags]
   - maincommand:
       name: run
       synopsis: Run a particular image on the cluster

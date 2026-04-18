@@ -1,10 +1,10 @@
-require "json"
+require "yaml"
 require "test_helper"
 require_relative "../lib/kube/ctl/command_tree"
 
 class CommandTreeTest < Minitest::Test
   def setup
-    data = JSON.parse(File.read(File.expand_path("../data/kubectl-command-tree-v1-minimal.json", __dir__)))
+    data = YAML.load_file(File.expand_path("../data/kubectl.yaml", __dir__))
     @tree = Kube::Ctl::CommandTree.new(data)
   end
 
@@ -76,7 +76,7 @@ class CommandTreeTest < Minitest::Test
 
     assert_results(
       result,
-      "get v1/apps -o yaml",
+      "get deployment/v1 --output yaml",
       commands: ["get"],
       resources: ["deployment/v1"],
       flags: ["--output yaml"],

@@ -1,6 +1,6 @@
 module Kube
   module Ctl
-    module CommandTree
+    class CommandTree
       class Node
         attr_reader :name, :options, :inherited_options, :subcommands, :usage
 
