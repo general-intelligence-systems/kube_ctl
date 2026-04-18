@@ -1,0 +1,28 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "kube/ctl"
+require "kube/cli"
+
+# Register built-in subcommands
+Kube::CLI.register "ctl", ->(argv) {
+  Kube::Ctl.run(argv.join(" "))
+}, description: "Run a kubectl command"
+
+Kube::CLI.register "helm", ->(argv) {
+  Kube::Helm.run(argv.join(" "))
+}, description: "Run a helm command"
+
+# Load subcommands from other gems.
+# Any gem can provide a `kube/cli/<name>` file that calls
+# Kube::CLI.register to add subcommands.
+Gem::Specification.each do |spec|
+  spec.require_paths.each do |require_path|
+    pattern = File.join(spec.gem_dir, require_path, "kube", "cli", "*.rb")
+    Dir.glob(pattern).each do |file|
+      require file
+    end
+  end
+end
+
+Kube::CLI.run(ARGV)
