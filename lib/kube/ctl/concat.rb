@@ -10,7 +10,6 @@ module Kube
 
       def concat
         parts = []
-        parts << "kubectl"
 
         join_next = false
 

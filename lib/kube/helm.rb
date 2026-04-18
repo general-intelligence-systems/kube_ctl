@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'shellwords'
 require 'rubyshell'
 
 #require_relative 'helm/string_builder'
@@ -15,7 +14,7 @@ module Kube
 
   module Helm
     def self.run(args)
-      sh { helm Shellwords.escape(args) }
+      sh { helm args }
     end
   end
 end

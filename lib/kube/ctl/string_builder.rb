@@ -9,14 +9,12 @@ SHADOWED_METHODS = %i[describe display freeze min max select sort format test cl
 class StringBuilder
   # Provide a safe, concise representation for REPL/debug output.
   def inspect
-    command = begin
-      to_s
-    rescue StandardError
-      '<unrenderable>'
+    if $stdout.tty?
+      Kube::Ctl.run(self.to_s)
+    else
+      parts = @buffer.respond_to?(:size) ? @buffer.size : 0
+      %(#<#{self.class} command=#{command.inspect} parts=#{parts}>)
     end
-
-    parts = @buffer.respond_to?(:size) ? @buffer.size : 0
-    %(#<#{self.class} command=#{command.inspect} parts=#{parts}>)
   end
 
   # Override call to handle kwargs: .(description: 'my frontend')
