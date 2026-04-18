@@ -188,7 +188,7 @@ commands:
       - helm verify - verify that a chart at the given path has been signed and is valid
       - helm version - print the helm version information
     synopsis: The Helm package manager for Kubernetes.
-  - description: |4
+  - description: |
       Generate autocompletion scripts for Helm for the specified shell.
     inherited_options:
       - default_value: "false"
@@ -306,7 +306,7 @@ commands:
       - helm completion powershell - generate autocompletion script for powershell
       - helm completion zsh - generate autocompletion script for zsh
     synopsis: generate autocompletion scripts for the specified shell
-  - description: |4
+  - description: |
       Generate the autocompletion script for Helm for the bash shell.
 
       To load completions in your current shell session:
@@ -437,7 +437,7 @@ commands:
       - helm completion - generate autocompletion scripts for the specified shell
     synopsis: generate autocompletion script for bash
     usage: helm completion bash [flags]
-  - description: |4
+  - description: |
       Generate the autocompletion script for Helm for the fish shell.
 
       To load completions in your current shell session:
@@ -564,7 +564,7 @@ commands:
     see_also:
       - helm completion - generate autocompletion scripts for the specified shell
     synopsis: generate autocompletion script for fish
-  - description: |4
+  - description: |
       Generate the autocompletion script for powershell.
 
       To load completions in your current shell session:
@@ -688,7 +688,7 @@ commands:
       - helm completion - generate autocompletion scripts for the specified shell
     synopsis: generate autocompletion script for powershell
     usage: helm completion powershell [flags]
-  - description: |4
+  - description: |
       Generate the autocompletion script for Helm for the zsh shell.
 
       To load completions in your current shell session:
@@ -814,7 +814,7 @@ commands:
       - helm completion - generate autocompletion scripts for the specified shell
     synopsis: generate autocompletion script for zsh
     usage: helm completion zsh [flags]
-  - description: |4
+  - description: |
       This command creates a chart directory along with the common files and
       directories used in a chart.
 
@@ -949,7 +949,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: create a new chart with the given name
     usage: helm create NAME [flags]
-  - description: |4
+  - description: |
       Manage the dependencies of a chart.
 
       Helm charts store their dependencies in 'charts/'. For chart developers, it is
@@ -1110,7 +1110,7 @@ commands:
       - helm dependency list - list the dependencies for the given chart
       - helm dependency update - update charts/ based on the contents of Chart.yaml
     synopsis: manage a chart's dependencies
-  - description: |4
+  - description: |
       Build out the charts/ directory from the Chart.lock file.
 
       Build is used to reconstruct a chart's dependencies to the state specified in
@@ -1260,7 +1260,7 @@ commands:
       - helm dependency - manage a chart's dependencies
     synopsis: rebuild the charts/ directory based on the Chart.lock file
     usage: helm dependency build CHART [flags]
-  - description: |4
+  - description: |
       List all of the dependencies declared in a chart.
 
       This can take chart archives and chart directories as input. It will not alter
@@ -1383,7 +1383,7 @@ commands:
       - helm dependency - manage a chart's dependencies
     synopsis: list the dependencies for the given chart
     usage: helm dependency list CHART [flags]
-  - description: |4
+  - description: |
       Update the on-disk dependencies to mirror Chart.yaml.
 
       This command verifies that the required charts, as expressed in 'Chart.yaml',
@@ -1537,7 +1537,7 @@ commands:
       - helm dependency - manage a chart's dependencies
     synopsis: update charts/ based on the contents of Chart.yaml
     usage: helm dependency update CHART [flags]
-  - description: |4
+  - description: |
       Env prints out all the environment information in use by Helm.
     inherited_options:
       - default_value: "false"
@@ -1652,7 +1652,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: helm client environment information
     usage: helm env [flags]
-  - description: |4
+  - description: |
       This command consists of multiple subcommands which can be used to
       get extended information about the release, including:
 
@@ -1779,7 +1779,7 @@ commands:
       - helm get notes - download the notes for a named release
       - helm get values - download the values file for a named release
     synopsis: download extended information of a named release
-  - description: |4
+  - description: |
       This command prints a human readable collection of information about the
       notes, hooks, supplied values, and generated manifest file of the given release.
     inherited_options:
@@ -1900,7 +1900,7 @@ commands:
       - helm get - download extended information of a named release
     synopsis: download all information for a named release
     usage: helm get all RELEASE_NAME [flags]
-  - description: |4
+  - description: |
       This command downloads hooks for a given release.
 
       Hooks are formatted in YAML and separated by the YAML '---\n' separator.
@@ -2020,7 +2020,7 @@ commands:
       - helm get - download extended information of a named release
     synopsis: download all hooks for a named release
     usage: helm get hooks RELEASE_NAME [flags]
-  - description: |4
+  - description: |
       This command fetches the generated manifest for a given release.
 
       A manifest is a YAML-encoded representation of the Kubernetes resources that
@@ -2263,7 +2263,7 @@ commands:
       - helm get - download extended information of a named release
     synopsis: This command fetches metadata for a given release
     usage: helm get metadata RELEASE_NAME [flags]
-  - description: |4
+  - description: |
       This command shows notes provided by the chart of a named release.
     inherited_options:
       - default_value: "false"
@@ -2381,7 +2381,7 @@ commands:
       - helm get - download extended information of a named release
     synopsis: download the notes for a named release
     usage: helm get notes RELEASE_NAME [flags]
-  - description: |4
+  - description: |
       This command downloads a values file for a given release.
     inherited_options:
       - default_value: "false"
@@ -2508,7 +2508,7 @@ commands:
       - helm get - download extended information of a named release
     synopsis: download the values file for a named release
     usage: helm get values RELEASE_NAME [flags]
-  - description: |4
+  - description: |
       History prints historical revisions for a given release.
 
       A default maximum of 256 revisions will be returned. Setting '--max'
@@ -2643,7 +2643,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: fetch release history
     usage: helm history RELEASE_NAME [flags]
-  - description: |4
+  - description: |
       This command installs a chart archive.
 
       The install argument must be a chart reference, a path to a packaged chart,
@@ -3005,7 +3005,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: install a chart
     usage: helm install [NAME] [CHART] [flags]
-  - description: |4
+  - description: |
       This command takes a path to a chart and runs a series of tests to verify that
       the chart is well-formed.
 
@@ -3164,7 +3164,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: examine a chart for possible issues
     usage: helm lint PATH [flags]
-  - description: |4
+  - description: |
       This command lists all of the releases for a specified namespace (uses current namespace context if namespace not specified).
 
       By default, it lists all releases in any status. Individual status filters like '--deployed', '--failed',
@@ -3365,7 +3365,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: list releases
     usage: helm list [flags]
-  - description: |4
+  - description: |
       This command packages a chart into a versioned chart archive file. If a path
       is given, this will look at that path for a chart (which must contain a
       Chart.yaml file) and then package that directory.
@@ -3535,7 +3535,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: package a chart directory into a chart archive
     usage: helm package [CHART_PATH] [...] [flags]
-  - description: |4
+  - description: |
       Manage client-side Helm plugins.
     inherited_options:
       - default_value: "false"
@@ -3655,7 +3655,7 @@ commands:
       - helm plugin update - update one or more Helm plugins
       - helm plugin verify - verify that a plugin at the given path has been signed and is valid
     synopsis: install, list, or uninstall Helm plugins
-  - description: |4
+  - description: |
       This command allows you to install a plugin from a url to a VCS repo or a local path.
 
       By default, plugin signatures are verified before installation when installing from
@@ -3918,7 +3918,7 @@ commands:
       - helm plugin - install, list, or uninstall Helm plugins
     synopsis: list installed Helm plugins
     usage: helm plugin list [flags]
-  - description: |4
+  - description: |
       This command packages a Helm plugin directory into a tarball.
 
       By default, the command will generate a provenance file signed with a PGP key.
@@ -4279,7 +4279,7 @@ commands:
       - helm plugin - install, list, or uninstall Helm plugins
     synopsis: update one or more Helm plugins
     usage: helm plugin update <plugin>... [flags]
-  - description: |4
+  - description: |
       This command verifies that a Helm plugin has a valid provenance file,
       and that the provenance file is signed by a trusted PGP key.
 
@@ -4409,7 +4409,7 @@ commands:
     synopsis: |
       verify that a plugin at the given path has been signed and is valid
     usage: helm plugin verify [PATH] [flags]
-  - description: |4
+  - description: |
       Retrieve a package from a package repository, and download it locally.
 
       This is useful for fetching packages to inspect, modify, or repackage. It can
@@ -4588,7 +4588,7 @@ commands:
     synopsis: |
       download a chart from a repository and (optionally) unpack it in local directory
     usage: helm pull [chart URL | repo/chartname] [...] [flags]
-  - description: |4
+  - description: |
       Upload a chart to a registry.
 
       If the chart has an associated provenance file,
@@ -4725,7 +4725,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: push a chart to remote
     usage: helm push [chart] [remote] [flags]
-  - description: |4
+  - description: |
       This command consists of multiple subcommands to interact with registries.
     inherited_options:
       - default_value: "false"
@@ -4841,7 +4841,7 @@ commands:
       - helm registry login - login to a registry
       - helm registry logout - logout from a registry
     synopsis: login to or logout from a registry
-  - description: |4
+  - description: |
       Authenticate to a remote registry.
 
       For example for Github Container Registry:
@@ -4982,7 +4982,7 @@ commands:
       - helm registry - login to or logout from a registry
     synopsis: login to a registry
     usage: helm registry login [host] [flags]
-  - description: |4
+  - description: |
       Remove credentials stored for a remote registry.
     inherited_options:
       - default_value: "false"
@@ -5097,7 +5097,7 @@ commands:
       - helm registry - login to or logout from a registry
     synopsis: logout from a registry
     usage: helm registry logout [host] [flags]
-  - description: |4
+  - description: |
       This command consists of multiple subcommands to interact with chart repositories.
 
       It can be used to add, remove, list, and index chart repositories.
@@ -5361,7 +5361,7 @@ commands:
       - helm repo - add, list, remove, update, and index chart repositories
     synopsis: add a chart repository
     usage: helm repo add [NAME] [URL] [flags]
-  - description: |4
+  - description: |
       Read the current directory, generate an index file based on the charts found
       and write the result to 'index.yaml' in the current directory.
 
@@ -5727,7 +5727,7 @@ commands:
       - helm repo - add, list, remove, update, and index chart repositories
     synopsis: remove one or more chart repositories
     usage: helm repo remove [REPO1 [REPO2 ...]] [flags]
-  - description: |4
+  - description: |
       Update gets the latest information about charts from the respective chart repositories.
       Information is cached locally, where it is used by commands like 'helm search'.
 
@@ -5851,7 +5851,7 @@ commands:
     synopsis: |
       update information of available charts locally from chart repositories
     usage: helm repo update [REPO1 [REPO2 ...]] [flags]
-  - description: |4
+  - description: |
       This command rolls back a release to a previous revision.
 
       The first argument of the rollback command is the name of a release, and the
@@ -6013,7 +6013,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: roll back a release to a previous revision
     usage: helm rollback <RELEASE> [REVISION] [flags]
-  - description: |4
+  - description: |
       Search provides the ability to search for Helm charts in the various places
       they can be stored including the Artifact Hub and repositories you have added.
       Use search subcommands to search different locations for charts.
@@ -6131,7 +6131,7 @@ commands:
       - helm search hub - search for charts in the Artifact Hub or your own hub instance
       - helm search repo - search repositories for a keyword in charts
     synopsis: search for a keyword in charts
-  - description: |4
+  - description: |
       Search for Helm charts in the Artifact Hub or your own hub instance.
 
       Artifact Hub is a web-based application that enables finding, installing, and
@@ -6280,7 +6280,7 @@ commands:
     synopsis: |
       search for charts in the Artifact Hub or your own hub instance
     usage: helm search hub [KEYWORD] [flags]
-  - description: |4
+  - description: |
       Search reads through all of the repositories configured on the system, and
       looks for matches. Search of these repositories uses the metadata stored on
       the system.
@@ -6442,7 +6442,7 @@ commands:
       - helm search - search for a keyword in charts
     synopsis: search repositories for a keyword in charts
     usage: helm search repo [keyword] [flags]
-  - description: |4
+  - description: |
       This command consists of multiple subcommands to display information about a chart
     inherited_options:
       - default_value: "false"
@@ -6561,7 +6561,7 @@ commands:
       - helm show readme - show the chart's README
       - helm show values - show the chart's values
     synopsis: show information of a chart
-  - description: |4
+  - description: |
       This command inspects a chart (directory, file, or URL) and displays all its content
       (values.yaml, Chart.yaml, README)
     inherited_options:
@@ -6714,7 +6714,7 @@ commands:
       - helm show - show information of a chart
     synopsis: show all information of the chart
     usage: helm show all [CHART] [flags]
-  - description: |4
+  - description: |
       This command inspects a chart (directory, file, or URL) and displays the contents
       of the Chart.yaml file
     inherited_options:
@@ -6867,7 +6867,7 @@ commands:
       - helm show - show information of a chart
     synopsis: show the chart's definition
     usage: helm show chart [CHART] [flags]
-  - description: |4
+  - description: |
       This command inspects a chart (directory, file, or URL) and displays the contents
       of the CustomResourceDefinition files
     inherited_options:
@@ -7020,7 +7020,7 @@ commands:
       - helm show - show information of a chart
     synopsis: show the chart's CRDs
     usage: helm show crds [CHART] [flags]
-  - description: |4
+  - description: |
       This command inspects a chart (directory, file, or URL) and displays the contents
       of the README file
     inherited_options:
@@ -7173,7 +7173,7 @@ commands:
       - helm show - show information of a chart
     synopsis: show the chart's README
     usage: helm show readme [CHART] [flags]
-  - description: |4
+  - description: |
       This command inspects a chart (directory, file, or URL) and displays the contents
       of the values.yaml file
     inherited_options:
@@ -7328,7 +7328,7 @@ commands:
       - helm show - show information of a chart
     synopsis: show the chart's values
     usage: helm show values [CHART] [flags]
-  - description: |4
+  - description: |
       This command shows the status of a named release.
       The status consists of:
       - last deployment time
@@ -7461,7 +7461,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: display the status of the named release
     usage: helm status RELEASE_NAME [flags]
-  - description: |4
+  - description: |
       Render chart templates locally and display the output.
 
       Any values that would normally be looked up or retrieved in-cluster will be
@@ -7774,7 +7774,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: locally render templates
     usage: helm template [NAME] [CHART] [flags]
-  - description: |4
+  - description: |
       The test command runs the tests for a release.
 
       The argument this command takes is the name of a deployed release.
@@ -7904,7 +7904,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: run tests for a release
     usage: helm test [RELEASE] [flags]
-  - description: |4
+  - description: |
       This command takes a release name and uninstalls the release.
 
       It removes all of the resources associated with the last release of the chart
@@ -8052,7 +8052,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: uninstall a release
     usage: helm uninstall RELEASE_NAME [...] [flags]
-  - description: |4
+  - description: |
       This command upgrades a release to a new version of a chart.
 
       The upgrade arguments must be a release and chart. The chart
@@ -8382,7 +8382,7 @@ commands:
       - helm - The Helm package manager for Kubernetes.
     synopsis: upgrade a release
     usage: helm upgrade [RELEASE] [CHART] [flags]
-  - description: |4
+  - description: |
       Verify that the given chart has a valid provenance file.
 
       Provenance files provide cryptographic verification that a chart has not been
@@ -8508,7 +8508,7 @@ commands:
     synopsis: |
       verify that a chart at the given path has been signed and is valid
     usage: helm verify PATH [flags]
-  - description: |4
+  - description: |
       Show the version for Helm.
 
       This will print a representation the version of Helm.

@@ -7,7 +7,7 @@ GIT
 PATH
   remote: .
   specs:
-    kube_kubectl (1.1.0)
+    kube_kubectl (1.2.0)
       debug (~> 1.11)
       json_schemer (~> 2.5)
       rubyshell (~> 1.5)

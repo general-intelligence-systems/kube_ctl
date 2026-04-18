@@ -4,7 +4,7 @@
 
 # Methods that are defined on Object/Kernel/Enumerable and shadow method_missing.
 # These need explicit overrides so they work in the DSL.
-SHADOWED_METHODS = %i[describe display freeze min max select sort format test clone p].freeze
+SHADOWED_METHODS = %i[describe display filter freeze min max select sort format test clone p].freeze
 
 class StringBuilder
   # Provide a safe, concise representation for REPL/debug output.

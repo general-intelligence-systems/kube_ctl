@@ -1,0 +1,183 @@
+=== helm completion bash ===
+  usage: helm completion bash [flags]
+  helm completion bash > /etc/bash_completion.d/helm
+  helm completion bash > /usr/local/etc/bash_completion.d/helm
+
+=== helm completion fish ===
+  helm completion fish | source
+  helm completion fish > ~/.config/fish/completions/helm.fish
+
+=== helm completion powershell ===
+  usage: helm completion powershell [flags]
+
+=== helm completion zsh ===
+  usage: helm completion zsh [flags]
+  helm completion zsh > "${fpath[1]}/_helm"
+
+=== helm create ===
+  usage: helm create NAME [flags]
+
+=== helm dependency build ===
+  usage: helm dependency build CHART [flags]
+
+=== helm dependency list ===
+  usage: helm dependency list CHART [flags]
+
+=== helm dependency update ===
+  usage: helm dependency update CHART [flags]
+
+=== helm env ===
+  usage: helm env [flags]
+
+=== helm get all ===
+  usage: helm get all RELEASE_NAME [flags]
+
+=== helm get hooks ===
+  usage: helm get hooks RELEASE_NAME [flags]
+
+=== helm get manifest ===
+  usage: helm get manifest RELEASE_NAME [flags]
+
+=== helm get metadata ===
+  usage: helm get metadata RELEASE_NAME [flags]
+
+=== helm get notes ===
+  usage: helm get notes RELEASE_NAME [flags]
+
+=== helm get values ===
+  usage: helm get values RELEASE_NAME [flags]
+
+=== helm history ===
+  usage: helm history RELEASE_NAME [flags]
+  helm history angry-bird
+
+=== helm install ===
+  usage: helm install [NAME] [CHART] [flags]
+  helm install -f myvalues.yaml myredis ./redis
+  helm install --set name=prod myredis ./redis
+  helm install --set-string long_int=1234567890 myredis ./redis
+  helm install --set-file my_script=dothings.sh myredis ./redis
+  helm install --set-json 'master.sidecars=[{"name":"sidecar","image":"myImage","imagePullPolicy":"Always","ports":[{"name":"portname","containerPort":1234}]}]' myredis ./redis
+  helm install --set-json '{"master":{"sidecars":[{"name":"sidecar","image":"myImage","imagePullPolicy":"Always","ports":[{"name":"portname","containerPort":1234}]}]}}' myredis ./redis
+  helm install -f myvalues.yaml -f override.yaml  myredis ./redis
+  helm install --set foo=bar --set foo=newbar  myredis ./redis
+  helm install --set-json='foo=["one", "two", "three"]' --set-json='foo=["four"]' myredis ./redis
+  helm install --set-json='foo={"key1":"value1","key2":"value2"}' --set-json='foo.key2="bar"' myredis ./redis
+  helm install mymaria example/mariadb
+  helm install mynginx ./nginx-1.2.3.tgz
+  helm install mynginx ./nginx
+  helm install mynginx https://example.com/charts/nginx-1.2.3.tgz
+  helm install --repo https://example.com/charts/ mynginx nginx
+  helm install mynginx --version 1.2.3 oci://example.com/charts/nginx
+
+=== helm lint ===
+  usage: helm lint PATH [flags]
+
+=== helm list ===
+  usage: helm list [flags]
+  helm list --filter 'ara[a-z]+'
+
+=== helm package ===
+  usage: helm package [CHART_PATH] [...] [flags]
+  helm package --sign ./mychart --key mykey --keyring ~/.gnupg/secring.gpg
+
+=== helm plugin install ===
+  usage: helm plugin install [options] <path|url> [flags]
+
+=== helm plugin list ===
+  usage: helm plugin list [flags]
+
+=== helm plugin package ===
+  usage: helm plugin package [PATH] [flags]
+
+=== helm plugin uninstall ===
+  usage: helm plugin uninstall <plugin>... [flags]
+
+=== helm plugin update ===
+  usage: helm plugin update <plugin>... [flags]
+
+=== helm plugin verify ===
+  usage: helm plugin verify [PATH] [flags]
+  helm plugin verify ~/.local/share/helm/plugins/example-cli
+
+=== helm pull ===
+  usage: helm pull [chart URL | repo/chartname] [...] [flags]
+
+=== helm push ===
+  usage: helm push [chart] [remote] [flags]
+
+=== helm registry login ===
+  usage: helm registry login [host] [flags]
+
+=== helm registry logout ===
+  usage: helm registry logout [host] [flags]
+
+=== helm repo add ===
+  usage: helm repo add [NAME] [URL] [flags]
+
+=== helm repo index ===
+  usage: helm repo index [DIR] [flags]
+
+=== helm repo list ===
+  usage: helm repo list [flags]
+
+=== helm repo remove ===
+  usage: helm repo remove [REPO1 [REPO2 ...]] [flags]
+
+=== helm repo update ===
+  usage: helm repo update [REPO1 [REPO2 ...]] [flags]
+  helm repo update <repo_name> ...
+
+=== helm rollback ===
+  usage: helm rollback <RELEASE> [REVISION] [flags]
+
+=== helm search hub ===
+  usage: helm search hub [KEYWORD] [flags]
+
+=== helm search repo ===
+  usage: helm search repo [keyword] [flags]
+  helm search repo nginx
+  helm search repo nginx --devel
+  helm search repo nginx-ingress --version ^1.0.0
+
+=== helm show all ===
+  usage: helm show all [CHART] [flags]
+
+=== helm show chart ===
+  usage: helm show chart [CHART] [flags]
+
+=== helm show crds ===
+  usage: helm show crds [CHART] [flags]
+
+=== helm show readme ===
+  usage: helm show readme [CHART] [flags]
+
+=== helm show values ===
+  usage: helm show values [CHART] [flags]
+
+=== helm status ===
+  usage: helm status RELEASE_NAME [flags]
+
+=== helm template ===
+  usage: helm template [NAME] [CHART] [flags]
+  helm template --api-versions networking.k8s.io/v1 --api-versions cert-manager.io/v1 mychart ./mychart
+  helm template --api-versions networking.k8s.io/v1,cert-manager.io/v1 mychart ./mychart
+
+=== helm test ===
+  usage: helm test [RELEASE] [flags]
+
+=== helm uninstall ===
+  usage: helm uninstall RELEASE_NAME [...] [flags]
+
+=== helm upgrade ===
+  usage: helm upgrade [RELEASE] [CHART] [flags]
+  helm upgrade -f myvalues.yaml -f override.yaml redis ./redis
+  helm upgrade --set foo=bar --set foo=newbar redis ./redis
+  helm upgrade --reuse-values --set foo=bar --set foo=newbar redis ./redis
+
+=== helm verify ===
+  usage: helm verify PATH [flags]
+
+=== helm version ===
+  usage: helm version [flags]
+

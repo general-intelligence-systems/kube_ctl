@@ -2,14 +2,12 @@
 
 require 'rubyshell'
 
-#require_relative 'helm/string_builder'
 require_relative 'helm/instance'
+require_relative 'helm/command_tree'
 
 module Kube
   def self.helm(&block)
-    Kube::Helm::Instance.new.call(&block).then do |command|
-      Kube::Helm.run(command)
-    end
+    Kube::Helm::Instance.new.call(&block)
   end
 
   module Helm
