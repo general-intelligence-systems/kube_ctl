@@ -20,7 +20,8 @@ module Kube
       end
 
       def run(string)
-        Kube::Ctl.run "KUBECONFIG=#{@kubeconfig} #{string}"
+        cmd = @kubeconfig ? "#{string} --kubeconfig=#{@kubeconfig}" : string
+        Kube::Ctl.run cmd
       end
     end
   end
