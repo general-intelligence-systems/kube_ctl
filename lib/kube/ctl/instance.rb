@@ -10,18 +10,23 @@ module Kube
       end
 
       def call(&block)
-        sb = StringBuilder.new
-        sb.concat_handler = Kube::Ctl::Concat
-        if block
-          sb.wrap(&block)
-        else
-          sb
+        StringBuilder.new.tap do |builder|
+          builder.concat_handler = Kube::Ctl::Concat
+
+          if block_given?
+            builder.wrap(&block)
+          else
+            builder
+          end
         end
       end
 
       def run(string)
-        cmd = @kubeconfig ? "#{string} --kubeconfig=#{@kubeconfig}" : string
-        Kube::Ctl.run cmd
+        if @kubeconfig
+          Kube::Ctl.run "#{string} --kubeconfig=#{@kubeconfig}"
+        else
+          Kube::Ctl.run string
+        end
       end
     end
   end

@@ -7,6 +7,18 @@
 SHADOWED_METHODS = %i[describe display freeze min max select sort format test clone p].freeze
 
 class StringBuilder
+  # Provide a safe, concise representation for REPL/debug output.
+  def inspect
+    command = begin
+      to_s
+    rescue StandardError
+      '<unrenderable>'
+    end
+
+    parts = @buffer.respond_to?(:size) ? @buffer.size : 0
+    %(#<#{self.class} command=#{command.inspect} parts=#{parts}>)
+  end
+
   # Override call to handle kwargs: .(description: 'my frontend')
   # stores [{description: "my frontend"}] in the buffer.
   def call(token = nil, **kwargs)

@@ -8,7 +8,9 @@ require_relative 'helm/instance'
 
 module Kube
   def self.helm(&block)
-    Kube::Helm::Instance.new.call(&block)
+    Kube::Helm::Instance.new.call(&block).then do |command|
+      Kube::Helm.run(command)
+    end
   end
 
   module Helm

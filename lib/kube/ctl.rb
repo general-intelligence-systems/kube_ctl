@@ -13,7 +13,9 @@ require_relative 'ctl/instance'
 
 module Kube
   def self.ctl(&block)
-    Kube::Ctl::Instance.new.call(&block)
+    Kube::Ctl::Instance.new.call(&block).then do |command|
+      Kube::Ctl.run(command)
+    end
   end
 
   module Ctl
