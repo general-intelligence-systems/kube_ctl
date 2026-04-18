@@ -1,0 +1,679 @@
+
+
+  kubectl annotate pods foo description='my frontend'
+  
+
+  kubectl annotate -f pod.json description='my frontend'
+  
+
+  kubectl annotate --overwrite pods foo description='my frontend running nginx'
+  
+
+  kubectl annotate pods --all description='my frontend running nginx'
+  
+
+  kubectl annotate pods foo description='my frontend running nginx' --resource-version=1
+  
+
+
+  kubectl annotate pods foo description-
+  kubectl api-versions
+  kubectl api-versions
+  kubectl apply -f ./pod.json
+  
+
+  cat pod.json | kubectl apply -f -
+  
+
+
+  kubectl apply --prune -f manifest.yaml -l app=nginx
+  
+
+  kubectl apply --prune -f manifest.yaml --all --prune-whitelist=core/v1/ConfigMap
+  kubectl apply edit-last-applied deployment/nginx
+  
+
+  kubectl apply edit-last-applied -f deploy.yaml -o json
+  kubectl apply set-last-applied -f deploy.yaml
+  
+
+  kubectl apply set-last-applied -f path/
+  
+
+  kubectl apply set-last-applied -f deploy.yaml --create-annotation=true
+  kubectl apply view-last-applied deployment/nginx
+  
+
+  kubectl apply view-last-applied -f deploy.yaml -o json
+  kubectl attach 123456-7890
+  
+
+  kubectl attach 123456-7890 -c ruby-container
+  
+
+
+  kubectl attach 123456-7890 -c ruby-container -i -t
+  
+
+  kubectl attach rs/nginx
+  kubectl auth can-i create pods --all-namespaces
+  
+
+  kubectl auth can-i list deployments.extensions
+  
+
+  kubectl auth can-i '*' '*'
+  
+
+  kubectl auth can-i list jobs.batch/bar -n foo
+  
+
+  kubectl auth can-i get pods --subresource=log
+  
+
+  kubectl auth can-i get /logs/
+  kubectl autoscale deployment foo --min=2 --max=10
+  
+
+  kubectl autoscale rc foo --max=5 --cpu-percent=80
+  kubectl cluster-info
+  kubectl cluster-info dump
+  
+
+  kubectl cluster-info dump --output-directory=/path/to/cluster-state
+  
+
+  kubectl cluster-info dump --all-namespaces
+  
+
+  kubectl cluster-info dump --namespaces default,kube-system --output-directory=/path/to/cluster-state
+  kubectl cluster-info
+  kubectl cluster-info dump
+  
+
+  kubectl cluster-info dump --output-directory=/path/to/cluster-state
+  
+
+  kubectl cluster-info dump --all-namespaces
+  
+
+  kubectl cluster-info dump --namespaces default,kube-system --output-directory=/path/to/cluster-state
+  brew install bash-completion
+  printf "
+
+  source $(brew --prefix)/etc/bash_completion
+  " >> $HOME/.bash_profile
+  source $HOME/.bash_profile
+  
+
+  source <(kubectl completion bash)
+  
+
+  kubectl completion bash > ~/.kube/completion.bash.inc
+  printf "
+
+  source '$HOME/.kube/completion.bash.inc'
+  " >> $HOME/.bash_profile
+  source $HOME/.bash_profile
+  
+
+  source <(kubectl completion zsh)
+  kubectl config current-context
+  kubectl config delete-cluster minikube
+  kubectl config delete-context minikube
+  kubectl config get-clusters
+  kubectl config get-contexts
+  
+
+  kubectl config get-contexts my-context
+  kubectl config rename-context old-name new-name
+  kubectl config set-cluster e2e --server=https://1.2.3.4
+  
+
+  kubectl config set-cluster e2e --certificate-authority=~/.kube/e2e/kubernetes.ca.crt
+  
+
+  kubectl config set-cluster e2e --insecure-skip-tls-verify=true
+  kubectl config set-context gce --user=cluster-admin
+
+  kubectl config set-credentials cluster-admin --client-key=~/.kube/admin.key
+  
+
+  kubectl config set-credentials cluster-admin --username=admin --password=uXFGweU9l35qcif
+  
+
+  kubectl config set-credentials cluster-admin --client-certificate=~/.kube/admin.crt --embed-certs=true
+  
+
+  kubectl config set-credentials cluster-admin --auth-provider=gcp
+  
+
+  kubectl config set-credentials cluster-admin --auth-provider=oidc --auth-provider-arg=client-id=foo --auth-provider-arg=client-secret=bar
+  
+
+  kubectl config set-credentials cluster-admin --auth-provider=oidc --auth-provider-arg=client-secret-
+  kubectl config use-context minikube
+  kubectl config view
+  
+
+  kubectl config view -o jsonpath='{.users[?(@.name == "e2e")].user.password}'
+  kubectl convert -f pod.yaml
+  
+
+
+  kubectl convert -f pod.yaml --local -o json
+  
+
+  kubectl convert -f . | kubectl create -f -
+  kubectl cordon foo
+
+
+  
+
+  kubectl cp /tmp/foo_dir <some-pod>:/tmp/bar_dir
+  
+
+  kubectl cp /tmp/foo <some-pod>:/tmp/bar -c <specific-container>
+  
+
+  kubectl cp /tmp/foo <some-namespace>/<some-pod>:/tmp/bar
+  
+
+  kubectl cp <some-namespace>/<some-pod>:/tmp/foo /tmp/bar
+  kubectl create -f ./pod.json
+  
+
+  cat pod.json | kubectl create -f -
+  
+
+  kubectl create -f docker-registry.yaml --edit --output-version=v1 -o json
+  kubectl create clusterrole pod-reader --verb=get,list,watch --resource=pods
+  
+
+  kubectl create clusterrole pod-reader --verb=get,list,watch --resource=pods --resource-name=readablepod --resource-name=anotherpod
+  
+
+  kubectl create clusterrole foo --verb=get,list,watch --resource=rs.extensions
+  
+
+  kubectl create clusterrole foo --verb=get,list,watch --resource=pods,pods/status
+  
+
+  kubectl create clusterrole "foo" --verb=get --non-resource-url=/logs/*
+  kubectl create clusterrolebinding cluster-admin --clusterrole=cluster-admin --user=user1 --user=user2 --group=group1
+  kubectl create configmap my-config --from-file=path/to/bar
+  
+
+  kubectl create configmap my-config --from-file=key1=/path/to/bar/file1.txt --from-file=key2=/path/to/bar/file2.txt
+  
+
+  kubectl create configmap my-config --from-literal=key1=config1 --from-literal=key2=config2
+  
+
+  kubectl create configmap my-config --from-file=path/to/bar
+  
+
+  kubectl create configmap my-config --from-env-file=path/to/bar.env
+  kubectl create deployment my-dep --image=busybox
+  kubectl create namespace my-namespace
+
+  kubectl create poddisruptionbudget my-pdb --selector=app=rails --min-available=1
+  
+
+
+  kubectl create pdb my-pdb --selector=app=nginx --min-available=50%
+  kubectl create quota my-quota --hard=cpu=1,memory=1G,pods=2,services=3,replicationcontrollers=2,resourcequotas=1,secrets=5,persistentvolumeclaims=10
+  
+
+  kubectl create quota best-effort --hard=pods=100 --scopes=BestEffort
+  kubectl create role pod-reader --verb=get --verb=list --verb=watch --resource=pods
+  
+
+  kubectl create role pod-reader --verb=get,list,watch --resource=pods --resource-name=readablepod --resource-name=anotherpod
+  
+
+  kubectl create role foo --verb=get,list,watch --resource=rs.extensions
+  
+
+  kubectl create role foo --verb=get,list,watch --resource=pods,pods/status
+  kubectl create rolebinding admin --clusterrole=admin --user=user1 --user=user2 --group=group1
+  kubectl create secret docker-registry my-secret --docker-server=DOCKER_REGISTRY_SERVER --docker-username=DOCKER_USER --docker-password=DOCKER_PASSWORD --docker-email=DOCKER_EMAIL
+  kubectl create secret generic my-secret --from-file=path/to/bar
+  
+
+  kubectl create secret generic my-secret --from-file=ssh-privatekey=~/.ssh/id_rsa --from-file=ssh-publickey=~/.ssh/id_rsa.pub
+  
+
+  kubectl create secret generic my-secret --from-literal=key1=supersecret --from-literal=key2=topsecret
+  
+
+  kubectl create secret generic my-secret --from-env-file=path/to/bar.env
+  kubectl create secret tls tls-secret --cert=path/to/tls.cert --key=path/to/tls.key
+  kubectl create service clusterip my-cs --tcp=5678:8080
+  
+
+  kubectl create service clusterip my-cs --clusterip="None"
+  kubectl create service externalname my-ns --external-name bar.com
+  kubectl create service loadbalancer my-lbs --tcp=5678:8080
+  kubectl create service nodeport my-ns --tcp=5678:8080
+  kubectl create serviceaccount my-service-account
+  kubectl delete -f ./pod.json
+  
+
+  cat pod.json | kubectl delete -f -
+  
+
+  kubectl delete pod,service baz foo
+  
+
+  kubectl delete pods,services -l name=myLabel
+  
+
+  kubectl delete pod foo --now
+  
+
+  kubectl delete pod foo --grace-period=0 --force
+  
+
+  kubectl delete pods --all
+  kubectl describe nodes kubernetes-node-emt8.c.myproject.internal
+  
+
+  kubectl describe pods/nginx
+  
+
+  kubectl describe -f pod.json
+  
+
+  kubectl describe pods
+  
+
+  kubectl describe po -l name=myLabel
+  
+
+
+  kubectl describe pods frontend
+  $ kubectl drain foo --force
+  
+
+  $ kubectl drain foo --grace-period=900
+  kubectl edit svc/docker-registry
+  
+
+  KUBE_EDITOR="nano" kubectl edit svc/docker-registry
+  
+
+  kubectl edit job.v1.batch/myjob -o json
+  
+
+  kubectl edit deployment/mydeployment -o yaml --save-config
+  kubectl exec 123456-7890 date
+  
+
+  kubectl exec 123456-7890 -c ruby-container date
+  
+
+
+  kubectl exec 123456-7890 -c ruby-container -i -t -- bash -il
+  
+
+
+
+
+
+  kubectl exec 123456-7890 -i -t -- ls -t /usr
+  kubectl explain pods
+  
+
+  kubectl explain pods.spec.containers
+  kubectl expose rc nginx --port=80 --target-port=8000
+  
+
+  kubectl expose -f nginx-controller.yaml --port=80 --target-port=8000
+  
+
+  kubectl expose pod valid-pod --port=444 --name=frontend
+  
+
+  kubectl expose service nginx --port=443 --target-port=8443 --name=nginx-https
+  
+
+  kubectl expose rc streamer --port=4100 --protocol=udp --name=video-stream
+  
+
+  kubectl expose rs nginx --port=80 --target-port=8000
+  
+
+  kubectl expose deployment nginx --port=80 --target-port=8000
+  kubectl get pods
+  
+
+  kubectl get pods -o wide
+  
+
+  kubectl get replicationcontroller web
+  
+
+  kubectl get -o json pod web-pod-13je7
+  
+
+  kubectl get -f pod.yaml -o json
+  
+
+  kubectl get -o template pod/web-pod-13je7 --template={{.status.phase}}
+  
+
+  kubectl get rc,services
+  
+
+  kubectl get rc/web service/frontend pods/web-pod-13je7
+  
+
+  kubectl get all
+  kubectl label pods foo unhealthy=true
+  
+
+  kubectl label --overwrite pods foo status=unhealthy
+  
+
+  kubectl label pods --all status=unhealthy
+  
+
+  kubectl label -f pod.json status=unhealthy
+  
+
+  kubectl label pods foo status=unhealthy --resource-version=1
+  
+
+
+  kubectl label pods foo bar-
+  kubectl logs nginx
+  
+
+  kubectl logs -lapp=nginx
+  
+
+  kubectl logs -p -c ruby web-1
+  
+
+  kubectl logs -f -c ruby web-1
+  
+
+  kubectl logs --tail=20 nginx
+  
+
+  kubectl logs --since=1h nginx
+  
+
+  kubectl logs job/hello
+  
+
+  kubectl logs deployment/nginx -c nginx-1
+  kubectl options
+  kubectl patch node k8s-node-1 -p '{"spec":{"unschedulable":true}}'
+  
+
+  kubectl patch -f node.json -p '{"spec":{"unschedulable":true}}'
+  
+
+  kubectl patch pod valid-pod -p '{"spec":{"containers":[{"name":"kubernetes-serve-hostname","image":"new image"}]}}'
+  
+
+  kubectl patch pod valid-pod --type='json' -p='[{"op": "replace", "path": "/spec/containers/0/image", "value":"new image"}]'
+  kubectl port-forward mypod 5000 6000
+  
+
+  kubectl port-forward mypod 8888:5000
+  
+
+  kubectl port-forward mypod :5000
+  
+
+  kubectl port-forward mypod 0:5000
+  
+  $ kubectl proxy --api-prefix=/
+  
+
+  
+  $ kubectl proxy --www=/my/files --www-prefix=/static/ --api-prefix=/api/
+  
+
+  
+
+  
+  $ kubectl proxy --api-prefix=/custom/
+  
+
+  
+
+  kubectl proxy --port=8011 --www=./local/www/
+  
+
+
+  kubectl proxy --port=0
+  
+
+
+  kubectl proxy --api-prefix=/k8s-api
+  kubectl replace -f ./pod.json
+  
+
+  cat pod.json | kubectl replace -f -
+  
+
+  kubectl get pod mypod -o yaml | sed 's/\(image: myimage\):.*$/\1:v4/' | kubectl replace -f -
+  
+
+  kubectl replace --force -f ./pod.json
+  kubectl scale --replicas=3 rs/foo
+  
+
+  kubectl scale --replicas=3 -f foo.yaml
+  
+
+  kubectl scale --current-replicas=2 --replicas=3 deployment/mysql
+  
+
+  kubectl scale --replicas=5 rc/foo rc/bar rc/baz
+  
+
+  kubectl scale --replicas=3 job/cron
+  kubectl rolling-update frontend-v1 -f frontend-v2.json
+  
+
+  cat frontend-v2.json | kubectl rolling-update frontend-v1 -f -
+  
+
+
+  kubectl rolling-update frontend-v1 frontend-v2 --image=image:v2
+  
+
+  kubectl rolling-update frontend --image=image:v2
+  
+
+  kubectl rolling-update frontend-v1 frontend-v2 --rollback
+  kubectl rolling-update frontend-v1 -f frontend-v2.json
+  
+
+  cat frontend-v2.json | kubectl rolling-update frontend-v1 -f -
+  
+
+
+  kubectl rolling-update frontend-v1 frontend-v2 --image=image:v2
+  
+
+  kubectl rolling-update frontend --image=image:v2
+  
+
+  kubectl rolling-update frontend-v1 frontend-v2 --rollback
+  kubectl rollout undo deployment/abc
+  
+
+  kubectl rollout status daemonset/foo
+  kubectl rollout history deployment/abc
+  
+
+  kubectl rollout history daemonset/abc --revision=3
+
+
+  kubectl rollout pause deployment/nginx
+  kubectl rollout resume deployment/nginx
+  kubectl rollout status deployment/nginx
+  kubectl rollout undo deployment/abc
+  
+
+  kubectl rollout undo daemonset/abc --to-revision=3
+  
+
+  kubectl rollout undo --dry-run=true deployment/abc
+  kubectl run nginx --image=nginx
+  
+
+  kubectl run hazelcast --image=hazelcast --port=5701
+  
+
+  kubectl run hazelcast --image=hazelcast --env="DNS_DOMAIN=cluster" --env="POD_NAMESPACE=default"
+  
+
+  kubectl run nginx --image=nginx --replicas=5
+  
+
+  kubectl run nginx --image=nginx --dry-run
+  
+
+  kubectl run nginx --image=nginx --overrides='{ "apiVersion": "v1", "spec": { ... } }'
+  
+
+  kubectl run -i -t busybox --image=busybox --restart=Never
+  
+
+  kubectl run nginx --image=nginx -- <arg1> <arg2> ... <argN>
+  
+
+  kubectl run nginx --image=nginx --command -- <cmd> <arg1> ... <argN>
+  
+
+  kubectl run pi --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+  
+
+  kubectl run pi --schedule="0/5 * * * ?" --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+  kubectl run nginx --image=nginx
+  
+
+  kubectl run hazelcast --image=hazelcast --port=5701
+  
+
+  kubectl run hazelcast --image=hazelcast --env="DNS_DOMAIN=cluster" --env="POD_NAMESPACE=default"
+  
+
+  kubectl run nginx --image=nginx --replicas=5
+  
+
+  kubectl run nginx --image=nginx --dry-run
+  
+
+  kubectl run nginx --image=nginx --overrides='{ "apiVersion": "v1", "spec": { ... } }'
+  
+
+  kubectl run -i -t busybox --image=busybox --restart=Never
+  
+
+  kubectl run nginx --image=nginx -- <arg1> <arg2> ... <argN>
+  
+
+  kubectl run nginx --image=nginx --command -- <cmd> <arg1> ... <argN>
+  
+
+  kubectl run pi --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+  
+
+  kubectl run pi --schedule="0/5 * * * ?" --image=perl --restart=OnFailure -- perl -Mbignum=bpi -wle 'print bpi(2000)'
+  kubectl scale --replicas=3 rs/foo
+  
+
+  kubectl scale --replicas=3 -f foo.yaml
+  
+
+  kubectl scale --current-replicas=2 --replicas=3 deployment/mysql
+  
+
+  kubectl scale --replicas=5 rc/foo rc/bar rc/baz
+  
+
+  kubectl scale --replicas=3 job/cron
+  kubectl set image deployment/nginx busybox=busybox nginx=nginx:1.9.1
+  
+
+  kubectl set image deployments,rc nginx=nginx:1.9.1 --all
+  
+
+  kubectl set image daemonset abc *=nginx:1.9.1
+  
+
+  kubectl set image -f path/to/file.yaml nginx=nginx:1.9.1 --local -o yaml
+  kubectl set resources deployment nginx -c=nginx --limits=cpu=200m,memory=512Mi
+  
+
+  kubectl set resources deployment nginx --limits=cpu=200m,memory=512Mi --requests=cpu=100m,memory=256Mi
+  
+
+  kubectl set resources deployment nginx --limits=cpu=0,memory=0 --requests=cpu=0,memory=0
+  
+
+  kubectl set resources -f path/to/file.yaml --limits=cpu=200m,memory=512Mi --local -o yaml
+  kubectl create service clusterip my-svc --clusterip="None" -o yaml --dry-run | kubectl set selector --local -f - 'environment=qa' -o yaml | kubectl create -f -
+  kubectl create deployment my-dep -o yaml --dry-run | kubectl label --local -f - environment=qa -o yaml | kubectl create -f -
+  kubectl set subject clusterrolebinding admin --serviceaccount=namespace:serviceaccount1
+  
+
+  kubectl set subject rolebinding admin --user=user1 --user=user2 --group=group1
+  
+
+  kubectl create rolebinding admin --role=admin --user=admin -o yaml --dry-run | kubectl set subject --local -f - --user=foo -o yaml
+  kubectl stop replicationcontroller foo
+  
+
+  kubectl stop pods,services -l name=myLabel
+  
+
+  kubectl stop -f service.json
+  
+
+  kubectl stop -f path/to/resources
+
+  kubectl taint nodes foo dedicated=special-user:NoSchedule
+  
+
+  kubectl taint nodes foo dedicated:NoSchedule-
+  
+
+  kubectl taint nodes foo dedicated-
+  
+
+  kubectl taint node -l myLabel=X  dedicated=foo:PreferNoSchedule
+  kubectl top node
+  
+
+  kubectl top node NODE_NAME
+  kubectl top pod
+  
+
+  kubectl top pod --namespace=NAMESPACE
+  
+
+  kubectl top pod POD_NAME --containers
+  
+
+  kubectl top pod -l name=myLabel
+  $ kubectl uncordon foo
+  kubectl replace -f ./pod.json
+  
+
+  cat pod.json | kubectl replace -f -
+  
+
+  kubectl get pod mypod -o yaml
+  
+
+  kubectl replace --force -f ./pod.json
+  kubectl version

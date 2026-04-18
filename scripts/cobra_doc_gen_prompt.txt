@@ -1,0 +1,121 @@
+# Meta-Prompt: Generate a Cobra CLI Command Tree as YAML
+
+## Objective
+
+You are to produce a runnable pipeline that generates a YAML representation of a Cobra-based CLI's command tree (e.g., `helm`, `kubectl`, `gh`, `hugo`, or any other Cobra CLI). The output must match the schema used by `kubernetes-sigs/reference-docs/kubectl.yaml` — i.e., one YAML file per command, containing `name`, `synopsis`, `description`, `options`, `inherited_options`, `example`, and `usage` fields.
+
+## Step 1 — Fetch the authoritative guide
+
+Download and read the official Cobra YAML documentation generation guide:
+
+```
+https://github.com/spf13/cobra/blob/main/site/content/docgen/yaml.md
+```
+
+Use the **raw** version for programmatic fetching:
+
+```
+https://raw.githubusercontent.com/spf13/cobra/main/site/content/docgen/yaml.md
+```
+
+From this guide, extract:
+- The exact signature of `doc.GenYamlTree(cmd, dir)`
+- The import path `github.com/spf13/cobra/doc`
+- The difference between `GenYaml` (single command) and `GenYamlTree` (entire tree)
+- The optional `GenYamlTreeCustom` / `GenYamlCustom` callback variants for `filePrepender` and `linkHandler`
+
+Do not proceed until you have confirmed the current API from the guide — the function names and signatures are the source of truth.
+
+## Step 2 — Identify the target CLI
+
+Ask (or assume, if specified) which Cobra CLI to document. For each target, you need:
+
+1. **The Go module path** that exposes the root command constructor (e.g., `helm.sh/helm/v3/cmd/helm`, `k8s.io/kubectl/pkg/cmd`, `github.com/cli/cli/v2/pkg/cmd/root`).
+2. **The exported function** that returns a `*cobra.Command` root (e.g., `helm.NewRootCmd`, `cmd.NewDefaultKubectlCommand`).
+
+If the target CLI does not expose its root command as a library, fall back to cloning the source repo and invoking the generator from within that module.
+
+## Step 3 — Write the generator program
+
+Produce a single Go file, `gen.go`, following the pattern from the guide. Template:
+
+```go
+package main
+
+import (
+    "log"
+    "os"
+
+    "github.com/spf13/cobra/doc"
+
+    // Replace with the target CLI's root command import:
+    rootcmd "<MODULE_PATH_FOR_TARGET_CLI>"
+)
+
+func main() {
+    outDir := "./out-yaml"
+    if err := os.MkdirAll(outDir, 0o755); err != nil {
+        log.Fatalf("mkdir: %v", err)
+    }
+
+    // Replace with the target CLI's root constructor:
+    cmd := rootcmd.<RootConstructor>()
+
+    if err := doc.GenYamlTree(cmd, outDir); err != nil {
+        log.Fatalf("GenYamlTree: %v", err)
+    }
+    log.Printf("wrote YAML tree to %s", outDir)
+}
+```
+
+Requirements:
+- Use `GenYamlTree`, not `GenYaml`, unless only a single command is needed.
+- Write to a dedicated output directory so the files don't pollute the working tree.
+- Preserve exit codes: log-and-exit on error.
+
+## Step 4 — Initialize and run
+
+Produce the exact shell commands to execute, in order:
+
+```bash
+# 1. Init a module
+mkdir cobra-yaml-gen && cd cobra-yaml-gen
+go mod init cobra-yaml-gen
+
+# 2. Add dependencies (versions resolved by go mod)
+go get github.com/spf13/cobra/doc
+go get <MODULE_PATH_FOR_TARGET_CLI>
+
+# 3. Drop in gen.go (from Step 3)
+
+# 4. Run
+go run gen.go
+
+# 5. Verify
+ls ./out-yaml | head
+cat ./out-yaml/<root>_<subcommand>.yaml
+```
+
+## Step 5 — Validate the output
+
+Confirm each emitted file contains the expected top-level keys: `name`, `synopsis`, `description`, `options`, `inherited_options`, `usage`, and — where applicable — `example`. Spot-check one leaf command and one command with subcommands to ensure the full tree was walked. If the CLI has hidden commands you want included, document that `GenYamlTree` by default skips commands with `Hidden: true` or `Deprecated != ""`, and point to `GenYamlTreeCustom` if overrides are needed.
+
+## Step 6 — (Optional) Merge into a single file
+
+If downstream tooling expects one file (like `kubectl.yaml`'s `toplevelcommandgroups` shape), write a short post-processing script that reads every `*.yaml` in `out-yaml/` and merges them into one document keyed by command path. Note explicitly that the per-file output from `GenYamlTree` is *not* identical to `kubectl.yaml`'s aggregated structure — the merge step is what reconciles them.
+
+## Deliverables
+
+Your final response must include, in order:
+1. The relevant extracted API details from the downloaded guide.
+2. The filled-in `gen.go` with the target CLI's actual import path and constructor.
+3. The exact shell command sequence to run it.
+4. A sample of the expected output (first 20 lines of one generated file).
+5. Any caveats discovered while reading the guide (hidden commands, custom prependers, link handlers).
+
+## Constraints
+
+- Do not invent Cobra API names — verify them from the fetched guide.
+- Do not skip Step 1; the guide is the contract.
+- If the target CLI's root command is not exported as a library, say so explicitly and propose the fallback (vendoring the CLI's own `cmd/` package or adding a `//go:build tools` generator inside the CLI's own repo).
+- Prefer `go run` over pre-built binaries so the generated YAML always matches the resolved module version.

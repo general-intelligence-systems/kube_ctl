@@ -11,8 +11,16 @@ module Kube
 
       def call(&block)
         sb = StringBuilder.new
-        sb.instance_eval(&block) if block
-        sb
+        sb.concat_handler = Kube::Ctl::Concat
+        if block
+          sb.wrap(&block)
+        else
+          sb
+        end
+      end
+
+      def run(string)
+        Kube::Ctl.run "KUBECONFIG=#{@kubeconfig} #{string}"
       end
     end
   end

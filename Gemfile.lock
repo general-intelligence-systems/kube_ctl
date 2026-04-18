@@ -1,7 +1,18 @@
+GIT
+  remote: https://github.com/n-at-han-k/string_builder.git
+  revision: 73ef984f69ad066c2c71cb8af9c44fe942e7f4d2
+  specs:
+    string_builder (1.1.0)
+
 PATH
   remote: .
   specs:
     kube_kubectl (1.0.0)
+      debug (~> 1.11)
+      json_schemer (~> 2.5)
+      rubyshell (~> 1.5)
+      shellwords (~> 0.2.2)
+      string_builder (~> 1.1.0)
 
 GEM
   remote: https://rubygems.org/
@@ -79,14 +90,11 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  debug (~> 1.11)
-  json_schemer (~> 2.5)
   kube_kubectl!
   minitest (~> 5.0)
   rake (~> 13.0)
   rubocop (~> 1.21)
-  rubyshell (~> 1.5)
-  shellwords (~> 0.2.2)
+  string_builder!
 
 BUNDLED WITH
    2.6.9
