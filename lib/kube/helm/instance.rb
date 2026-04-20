@@ -3,6 +3,12 @@
 module Kube
   module Helm
     class Instance
+      attr_reader :kubeconfig
+
+      def initialize(kubeconfig: ENV['KUBECONFIG'])
+        @kubeconfig = kubeconfig
+      end
+
       def call(&block)
         StringBuilder.new.tap do |builder|
           builder.concat_handler = Kube::Ctl::Concat
@@ -16,7 +22,11 @@ module Kube
       end
 
       def run(string)
-        Kube::Helm.run(string.to_s)
+        if @kubeconfig
+          Kube::Helm.run "#{string} --kubeconfig=#{@kubeconfig}"
+        else
+          Kube::Helm.run(string.to_s)
+        end
       end
     end
   end

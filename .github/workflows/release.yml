@@ -5,6 +5,7 @@ on:
     tags:
       - 'v*'
   workflow_call:
+  workflow_dispatch:
 
 jobs:
   build-binaries:
