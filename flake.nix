@@ -20,7 +20,7 @@
             owner = "kubernetes";
             repo = "kubernetes";
             rev = "v${version}";
-            hash = sha256-Oy638nIuz2xWVvMGWHUeI4T7eycXIfT+XHp0U7h8G9w=;  # replace after first build
+            hash = "sha256-Oy638nIuz2xWVvMGWHUeI4T7eycXIfT+XHp0U7h8G9w=";
           };
 
           vendorHash = null;
