@@ -1,0 +1,3829 @@
+commands:
+    - name: vcluster
+      synopsis: Welcome to vcluster!
+      description: vcluster root command
+      usage: vcluster [flags]
+      options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster certs - vCluster certs subcommands
+        - vcluster connect - Connect to a virtual cluster
+        - vcluster create - Create a new virtual cluster
+        - vcluster credits - Saves the OSS credits
+        - vcluster debug - Debug retrieves information from vCluster
+        - vcluster delete - Deletes a virtual cluster
+        - vcluster describe - Describes a virtual cluster
+        - vcluster disconnect - Disconnects from a vCluster platform context
+        - vcluster list - Lists all virtual clusters
+        - vcluster login - Log in to a vCluster platform instance
+        - vcluster logout - Log out of a vCluster platform instance
+        - vcluster node - vCluster node subcommand
+        - vcluster pause - Pauses a virtual cluster
+        - vcluster platform - vCluster platform subcommands
+        - vcluster registry - vCluster registry subcommand
+        - vcluster restore - Restores a virtual cluster from snapshot
+        - vcluster resume - Resumes a virtual cluster
+        - vcluster set - Set configuration
+        - vcluster snapshot - Snapshot a virtual cluster (deprecated, use 'vcluster snapshot create' instead)
+        - vcluster telemetry - Sets your vcluster telemetry preferences
+        - vcluster token - vCluster token subcommand
+        - vcluster ui - Start the web UI
+        - vcluster upgrade - Upgrade the vcluster CLI to the newest version
+        - vcluster use - vCluster use subcommand
+        - vcluster version - Print the version number of vcluster
+    - name: vcluster certs
+      synopsis: vCluster certs subcommands
+      description: |-
+        #######################################################
+        ################### vcluster certs ####################
+        #######################################################
+      usage: vcluster certs [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster certs check - Checks the current certificates
+        - vcluster certs rotate - Rotates control-plane client and server certs
+        - vcluster certs rotate-ca - Rotates the CA certificate
+    - name: vcluster certs check
+      synopsis: Checks the current certificates
+      description: |-
+        ##############################################################
+        ################### vcluster certs check #####################
+        ##############################################################
+        Checks the current certificates.
+
+        Examples:
+        vcluster -n test certs check test
+        ##############################################################
+      usage: vcluster certs check VCLUSTER_NAME [flags]
+      options:
+        - name: output
+          default_value: table
+          usage: Choose the format of the output. [table|json]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster certs rotate
+      synopsis: Rotates control-plane client and server certs
+      description: |-
+        ##############################################################
+        ################### vcluster certs rotate ####################
+        ##############################################################
+        Rotates the control-plane client and server leaf certificates
+        of the given virtual cluster.
+
+        Examples:
+        vcluster -n test certs rotate test
+        ##############################################################
+      usage: vcluster certs rotate VCLUSTER_NAME [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster certs rotate-ca
+      synopsis: Rotates the CA certificate
+      description: |-
+        ##############################################################
+        ################## vcluster certs rotate-ca ##################
+        ##############################################################
+        Rotates the CA certificates of the given virtual cluster using
+        the current CA certificates.
+        The CA files (ca.{crt,key}) can be placed in the PKI directory
+        (either /data/pki or /var/lib/vcluster/pki) to issue new leaf
+        certificates to be signed by that CA.
+        If the ca.crt file is a bundle containing multiple certificates
+        the new CA cert must be the first one in the bundle.
+
+        Examples:
+        vcluster certs rotate-ca test
+        ##############################################################
+      usage: vcluster certs rotate-ca VCLUSTER_NAME [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster connect
+      synopsis: Connect to a virtual cluster
+      description: |-
+        #######################################################
+        ################## vcluster connect ###################
+        #######################################################
+        Connect to a virtual cluster
+
+        Example:
+        vcluster connect test --namespace test
+        # Open a new bash with the vcluster KUBECONFIG defined
+        vcluster connect test -n test -- bash
+        vcluster connect test -n test -- kubectl get ns
+        #######################################################
+      usage: vcluster connect VCLUSTER_NAME [flags]
+      options:
+        - name: address
+          usage: The local address to start port forwarding under
+        - name: background-proxy
+          default_value: "true"
+          usage: Try to use a background-proxy to access the vCluster. Only works if docker is installed and reachable
+        - name: background-proxy-image
+          default_value: 'ghcr.io/loft-sh/vcluster-pro:'
+          usage: The image to use for the background proxy. Only used if --background-proxy is enabled.
+        - name: cluster-role
+          usage: If specified, vCluster will create the service account if it does not exist and also add a cluster role binding for the given cluster role to it. Requires --service-account to be set
+        - name: driver
+          usage: The driver to use for managing the virtual cluster, can be either helm, platform, or docker.
+        - name: insecure
+          default_value: "false"
+          usage: If specified, vCluster will create the kube config with insecure-skip-tls-verify
+        - name: local-port
+          default_value: "0"
+          usage: The local port to forward the virtual cluster to. If empty, vCluster will use a random unused port
+        - name: pod
+          usage: The pod to connect to
+        - name: print
+          default_value: "false"
+          usage: When enabled prints the context to stdout
+        - name: project
+          usage: '[PLATFORM] The platform project the vCluster is in'
+        - name: server
+          usage: The server to connect to
+        - name: service-account
+          usage: If specified, vCluster will create a service account token to connect to the virtual cluster instead of using the default client cert / key. Service account must exist and can be used as namespace/name.
+        - name: token-expiration
+          default_value: "0"
+          usage: If specified, vCluster will create the service account token for the given duration in seconds. Defaults to eternal
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster create
+      synopsis: Create a new virtual cluster
+      description: |-
+        #######################################################
+        ################### vcluster create ###################
+        #######################################################
+        Creates a new virtual cluster
+
+        Example:
+        vcluster create test --namespace test
+        #######################################################
+      usage: vcluster create VCLUSTER_NAME [flags]
+      options:
+        - name: add
+          default_value: "true"
+          usage: Adds the virtual cluster automatically to the current vCluster platform when using helm driver
+        - name: annotations
+          default_value: '[]'
+          usage: '[PLATFORM] Comma separated annotations to apply to the virtualclusterinstance'
+        - name: background-proxy
+          default_value: "true"
+          usage: Try to use a background-proxy to access the vCluster. Only works if docker is installed and reachable
+        - name: background-proxy-image
+          default_value: 'ghcr.io/loft-sh/vcluster-pro:'
+          usage: The image to use for the background proxy. Only used if --background-proxy is enabled.
+        - name: chart-name
+          default_value: vcluster
+          usage: The virtual cluster chart name to use
+        - name: chart-repo
+          default_value: https://charts.loft.sh
+          usage: The virtual cluster chart repo to use
+        - name: chart-version
+          usage: The virtual cluster chart version to use (e.g. v0.9.1)
+        - name: cluster
+          usage: '[PLATFORM] The vCluster platform connected cluster to use'
+        - name: connect
+          default_value: "true"
+          usage: If true will run vcluster connect directly after the vcluster was created
+        - name: create-namespace
+          default_value: "true"
+          usage: If true the namespace will be created if it does not exist
+        - name: description
+          usage: '[PLATFORM] The description to show in the platform UI for this virtual cluster'
+        - name: display-name
+          usage: '[PLATFORM] The display name to show in the platform UI for this virtual cluster'
+        - name: driver
+          usage: The driver to use for managing the virtual cluster, can be either helm, platform, or docker.
+        - name: expose
+          default_value: "false"
+          usage: If true will create a load balancer service to expose the vcluster endpoint
+        - name: kube-config-context-name
+          usage: If set, will override the context name of the generated virtual cluster kube config with this name
+        - name: labels
+          shorthand: l
+          default_value: '[]'
+          usage: '[PLATFORM] Comma separated labels to apply to the virtualclusterinstance'
+        - name: link
+          default_value: '[]'
+          usage: '[PLATFORM] A link to add to the vCluster. E.g. --link ''prod=http://exampleprod.com'''
+        - name: parameters
+          usage: '[PLATFORM] If a template is used, this can be used to use a file for the parameters. E.g. --parameters path/to/my/file.yaml'
+        - name: params
+          usage: '[PLATFORM] If a template is used, this can be used to use a file for the parameters. E.g. --params path/to/my/file.yaml'
+        - name: print
+          default_value: "false"
+          usage: If enabled, prints the context to the console
+        - name: project
+          usage: '[PLATFORM] The vCluster platform project to use'
+        - name: recreate
+          default_value: "false"
+          usage: '[PLATFORM] If enabled and there already exists a virtual cluster with this name, it will be deleted first'
+        - name: restore
+          usage: Restore the virtual cluster from a backup. E.g. --restore oci://ghcr.io/my-user/my-repo:my-tag
+        - name: set
+          default_value: '[]'
+          usage: Set values for helm. E.g. --set 'persistence.enabled=true'
+        - name: set-parameters
+          default_value: '[]'
+          usage: '[PLATFORM] If a template is used, this can be used to set a specific parameter. E.g. --set-parameter ''my-param=my-value'''
+        - name: set-params
+          default_value: '[]'
+          usage: '[PLATFORM] If a template is used, this can be used to set a specific parameter. E.g. --set-param ''my-param=my-value'''
+        - name: skip-wait
+          default_value: "false"
+          usage: '[PLATFORM] If true, will not wait until the virtual cluster is running'
+        - name: team
+          usage: '[PLATFORM] The team to create the space for'
+        - name: template
+          usage: '[PLATFORM] The vCluster platform template to use'
+        - name: template-version
+          usage: '[PLATFORM] The vCluster platform template version to use'
+        - name: upgrade
+          default_value: "false"
+          usage: If true will try to upgrade the vcluster instead of failing if it already exists
+        - name: use
+          default_value: "false"
+          usage: '[PLATFORM] If the platform should use the virtual cluster if its already there'
+        - name: user
+          usage: '[PLATFORM] The user to create the space for'
+        - name: values
+          shorthand: f
+          default_value: '[]'
+          usage: Path where to load extra helm values from
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster credits
+      synopsis: Saves the OSS credits
+      description: Saves licenses, copyright notices and source code, as required by a Go package's dependencies, to a directory.
+      usage: vcluster credits [OUTDIR] [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster debug
+      synopsis: Debug retrieves information from vCluster
+      description: |-
+        #######################################################
+        ################### vcluster debug ####################
+        #######################################################
+      usage: vcluster debug [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster debug collect - Collects debugging information from the vCluster
+        - vcluster debug shell - shell VCLUSTER_NAME [flags] -- [COMMAND] [args...] Debug a virtual cluster using ephemeral containers
+    - name: vcluster debug collect
+      synopsis: Collects debugging information from the vCluster
+      description: |-
+        ##############################################################
+        ################### vcluster debug collect ###################
+        ##############################################################
+        Collects debugging information from the vCluster
+
+        Examples:
+        vcluster debug collect
+        ##############################################################
+      usage: vcluster debug collect [flags]
+      options:
+        - name: count-virtual-cluster-objects
+          default_value: "true"
+          usage: Collect how many objects are in the vCluster
+        - name: host-info
+          default_value: "true"
+          usage: Collect host cluster info
+        - name: host-resources
+          default_value: '[]'
+          usage: Collect host resources in vCluster namespace
+        - name: logs
+          default_value: "true"
+          usage: Collect vCluster logs
+        - name: output-filename
+          usage: If specified, will write to the given filename
+        - name: release
+          default_value: "true"
+          usage: Collect vCluster release info
+        - name: virtual-info
+          default_value: "true"
+          usage: Collect virtual cluster info
+        - name: virtual-resources
+          default_value: '[]'
+          usage: Collect virtual cluster resources
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster debug shell
+      synopsis: shell VCLUSTER_NAME [flags] -- [COMMAND] [args...] Debug a virtual cluster using ephemeral containers
+      description: |-
+        #########################################################################
+        #################### vcluster debug ###################################
+        #########################################################################
+        Debug a virtual cluster by running commands in an ephemeral container
+
+        Example:
+        vcluster debug shell my-vcluster --target=syncer
+        vcluster debug shell my-vcluster --pod=my-vcluster-pod-0 --target=syncer
+        #########################################################################
+      usage: vcluster debug shell [flags]
+      options:
+        - name: pod
+          usage: vCluster pod name to create a shell for
+        - name: target
+          default_value: syncer
+          usage: Target container to debug
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster delete
+      synopsis: Deletes a virtual cluster
+      description: |-
+        #######################################################
+        ################### vcluster delete ###################
+        #######################################################
+        Deletes a virtual cluster
+
+        Example:
+        vcluster delete test --namespace test
+        #######################################################
+      usage: vcluster delete VCLUSTER_NAME [flags]
+      options:
+        - name: auto-delete-namespace
+          default_value: "true"
+          usage: If enabled, vcluster will delete the namespace of the vcluster if it was created by vclusterctl. In the case of multi-namespace mode, will also delete all other namespaces created by vcluster
+        - name: delete-configmap
+          default_value: "false"
+          usage: If enabled, vCluster will delete the ConfigMap of the vCluster
+        - name: delete-context
+          default_value: "true"
+          usage: If the corresponding kube context should be deleted if there is any
+        - name: delete-namespace
+          default_value: "false"
+          usage: If enabled, vCluster will delete the namespace of the vCluster. In cases when sync.toHost.namespaces was enabled, any namespaces and resources created due to syncing from the vCluster to the host cluster will also be deleted.
+        - name: driver
+          usage: The driver to use for managing the virtual cluster, can be either helm, platform, or docker.
+        - name: ignore-not-found
+          default_value: "false"
+          usage: If enabled, vcluster will not error out in case the target vcluster does not exist
+        - name: keep-pvc
+          default_value: "false"
+          usage: If enabled, vcluster will not delete the persistent volume claim of the vcluster
+        - name: project
+          usage: '[PLATFORM] The vCluster platform project to use'
+        - name: wait
+          default_value: "true"
+          usage: If enabled, vcluster will wait until the vcluster is deleted
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster describe
+      synopsis: Describes a virtual cluster
+      description: |-
+        #######################################################
+        ################## vcluster describe ##################
+        #######################################################
+        describes a virtual cluster
+
+        Example:
+        vcluster describe test
+        vcluster describe -o json test
+        #######################################################
+      usage: vcluster describe [flags]
+      options:
+        - name: config-only
+          default_value: "false"
+          usage: Return only the vcluster.yaml configuration
+        - name: driver
+          usage: The driver to use for managing the virtual cluster, can be either helm, platform, or docker.
+        - name: output
+          shorthand: o
+          usage: The format to use to display the information, can either be json or yaml
+        - name: project
+          shorthand: p
+          usage: The project to use
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster disconnect
+      synopsis: Disconnects from a vCluster platform context
+      description: |-
+        #######################################################
+        ################# vcluster disconnect #################
+        #######################################################
+        Disconnect switches back the kube context if
+        "vcluster connect --update-current" or "vcluster platform
+        connect" was used
+
+        Example:
+        vcluster connect --update-current
+        vcluster disconnect
+        #######################################################
+      usage: vcluster disconnect [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster list
+      synopsis: Lists all virtual clusters
+      description: |-
+        #######################################################
+        #################### vcluster list ####################
+        #######################################################
+        Lists all virtual clusters
+
+        Example:
+        vcluster list
+        vcluster list --output json
+        vcluster list --namespace test
+        #######################################################
+      usage: vcluster list [flags]
+      options:
+        - name: driver
+          usage: The driver to use for managing the virtual cluster, can be either helm, platform, or docker.
+        - name: output
+          default_value: table
+          usage: Choose the format of the output. [table|json]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster login
+      synopsis: Log in to a vCluster platform instance
+      description: |-
+        ########################################################
+        #################### vcluster login ####################
+        ########################################################
+        This command is deprecated. Use "vcluster platform login" instead.
+
+        Example:
+        vcluster platform login https://my-vcluster-platform.com
+        vcluster platform login https://my-vcluster-platform.com --access-key myaccesskey
+        ########################################################
+      usage: vcluster login [VCLUSTER_PLATFORM_HOST] [flags]
+      options:
+        - name: access-key
+          usage: The access key to use
+        - name: docker-login
+          default_value: "true"
+          usage: If true, will log into the docker image registries the user has image pull secrets for
+        - name: insecure
+          default_value: "true"
+          usage: Allow login into an insecure Loft instance
+        - name: use-driver
+          usage: Switch vCluster driver between platform, helm, and docker
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster logout
+      synopsis: Log out of a vCluster platform instance
+      description: |-
+        ########################################################
+        ################### vcluster logout ####################
+        ########################################################
+        Log out of vCluster platform
+
+        Example:
+        vcluster logout
+        ########################################################
+      usage: vcluster logout [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster node
+      synopsis: vCluster node subcommand
+      description: |-
+        #######################################################
+        ################### vcluster debug ####################
+        #######################################################
+      usage: vcluster node [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster node delete - Delete a node from the vcluster
+        - vcluster node load-image - Load a local docker image into a node
+        - vcluster node upgrade - Upgrade the node
+    - name: vcluster node delete
+      synopsis: Delete a node from the vcluster
+      description: |-
+        #######################################################
+        ################### vcluster delete ####################
+        #######################################################
+      usage: vcluster node delete [flags]
+      options:
+        - name: drain
+          default_value: "true"
+          usage: Drain the node before deleting it
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster node load-image
+      synopsis: Load a local docker image into a node
+      usage: vcluster node load-image [flags]
+      options:
+        - name: archive
+          usage: The tar.gz archive to load
+        - name: image
+          usage: The image to load
+        - name: pod-image
+          default_value: alpine
+          usage: The image to use for the node pod
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster node upgrade
+      synopsis: Upgrade the node
+      usage: vcluster node upgrade [flags]
+      options:
+        - name: binaries-path
+          default_value: /usr/local/bin
+          usage: The path to the kubeadm binaries
+        - name: bundle-repository
+          default_value: https://github.com/loft-sh/kubernetes/releases/download
+          usage: The repository to use for downloading the Kubernetes bundle
+        - name: cni-binaries-path
+          default_value: /opt/cni/bin
+          usage: The path to the CNI binaries
+        - name: image
+          usage: The image to use for the upgrade
+        - name: image-pull-policy
+          default_value: IfNotPresent
+          usage: The image pull policy
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster pause
+      synopsis: Pauses a virtual cluster
+      description: |-
+        #######################################################
+        ################### vcluster pause ####################
+        #######################################################
+        Pause will stop a virtual cluster and free all its used
+        computing resources.
+
+        Pause will scale down the virtual cluster and delete
+        all workloads created through the virtual cluster. Upon resume,
+        all workloads will be recreated. Other resources such
+        as persistent volume claims, services etc. will not be affected.
+
+        Example:
+        vcluster pause test --namespace test
+        #######################################################
+      usage: vcluster pause VCLUSTER_NAME [flags]
+      options:
+        - name: driver
+          usage: The driver for the virtual cluster, can be either helm, platform, or docker.
+        - name: prevent-wakeup
+          default_value: "-1"
+          usage: '[PLATFORM] The amount of seconds this vcluster should sleep until it can be woken up again (use 0 for infinite sleeping). During this time the space can only be woken up by `vcluster resume vcluster`, manually deleting the annotation on the namespace or through the loft UI'
+        - name: project
+          usage: '[PLATFORM] The vCluster platform project to use'
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform
+      synopsis: vCluster platform subcommands
+      description: |-
+        #######################################################
+        ################## vcluster platform ##################
+        #######################################################
+      usage: vcluster platform [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform access-key - Prints the access token to a vCluster platform instance
+        - vcluster platform add - Adds a cluster to vCluster platform
+        - vcluster platform backup - Backup subcommands
+        - vcluster platform connect - connects to vCluster platform resources
+        - vcluster platform create - Creates vCluster platform resources
+        - vcluster platform delete - Deletes vCluster platform resources
+        - vcluster platform destroy - Destroy a vCluster Platform instance
+        - vcluster platform get - Retrieves and display informations
+        - vcluster platform list - Lists configuration
+        - vcluster platform login - Login to a vCluster platform instance
+        - vcluster platform logout - Log out of a vCluster platform instance
+        - vcluster platform reset - Reset configuration
+        - vcluster platform set - Set configuration
+        - vcluster platform share - Shares a virtual cluster / namespace with another vCluster platform user or team
+        - vcluster platform sleep - Put a virtual cluster / namespace to sleep
+        - vcluster platform start - Start a vCluster platform instance and connect via port-forwarding
+        - vcluster platform wakeup - Wake up a virtual cluster / namespace
+    - name: vcluster platform access-key
+      synopsis: Prints the access token to a vCluster platform instance
+      description: |-
+        ########################################################
+        ############# vcluster platform token ##################
+        ########################################################
+
+        Prints an access token to a vCluster platform instance. This
+        can be used as an ExecAuthenticator for kubernetes
+
+        Example:
+        vcluster platform token
+        ########################################################
+      usage: vcluster platform access-key [flags]
+      options:
+        - name: direct-cluster-endpoint
+          default_value: "false"
+          usage: When enabled prints a direct cluster endpoint token
+        - name: project
+          usage: The project containing the virtual cluster
+        - name: virtual-cluster
+          usage: The virtual cluster
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform add
+      synopsis: Adds a cluster to vCluster platform
+      description: |-
+        #######################################################
+        ############# vcluster platform add ###################
+        #######################################################
+      usage: vcluster platform add [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform add cluster - add current cluster to vCluster platform
+        - vcluster platform add standalone - Adds an existing vCluster Standalone cluster to the vCluster platform
+        - vcluster platform add vcluster - Adds an existing vCluster to the vCluster platform
+    - name: vcluster platform add cluster
+      synopsis: add current cluster to vCluster platform
+      description: |-
+        #######################################################
+        ############ vcluster platform add cluster ############
+        #######################################################
+        Adds a cluster to the vCluster platform instance.
+
+        Example:
+        vcluster platform add cluster my-cluster
+        ########################################################
+      usage: vcluster platform add cluster [flags]
+      options:
+        - name: context
+          usage: The kube context to use for installation
+        - name: create-namespace
+          default_value: "true"
+          usage: If true the namespace will be created if it does not exist
+        - name: description
+          usage: The description to show in the UI for this cluster
+        - name: display-name
+          usage: The display name to show in the UI for this cluster
+        - name: helm-chart-path
+          usage: The agent chart to deploy
+        - name: helm-chart-version
+          usage: The agent chart version to deploy
+        - name: helm-set
+          default_value: '[]'
+          usage: Extra helm values for the agent chart
+        - name: helm-values
+          default_value: '[]'
+          usage: Extra helm values for the agent chart
+        - name: insecure
+          default_value: "false"
+          usage: If true, deploys the agent in insecure mode
+        - name: namespace
+          default_value: vcluster-platform
+          usage: The namespace to generate the service account in. The namespace will be created if it does not exist
+        - name: service-account
+          default_value: loft-admin
+          usage: The service account name to create
+        - name: wait
+          default_value: "false"
+          usage: If true, will wait until the cluster is initialized
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform add standalone
+      synopsis: Adds an existing vCluster Standalone cluster to the vCluster platform
+      description: |-
+        ################################################
+        ####### vcluster platform add standalone #######
+        ################################################
+        Adds a vCluster Standalone cluster to the vCluster platform.
+
+        Example:
+        vcluster platform add standalone my-cluster --project my-project --access-key my-access-key --host https://my-vcluster-platform.com
+
+        ################################################
+      usage: vcluster platform add standalone [flags]
+      options:
+        - name: access-key
+          usage: The access key for the vCluster to connect to the platform. If empty, the CLI will generate one
+        - name: host
+          usage: The host where to reach the platform
+        - name: insecure
+          default_value: "false"
+          usage: If the platform host is insecure
+        - name: project
+          usage: The project to import the vCluster into
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform add vcluster
+      synopsis: Adds an existing vCluster to the vCluster platform
+      description: |-
+        ###############################################
+        ############# vcluster platform add vcluster ##############
+        ###############################################
+        Adds a vCluster to the vCluster platform.
+
+        Example:
+        vcluster platform add vcluster my-vcluster --namespace vcluster-my-vcluster --project my-project --import-name my-vcluster
+
+        Add all vCluster instances in the host cluster:
+        vcluster platform add vcluster --project my-project --all
+
+        ###############################################
+      usage: vcluster platform add vcluster [flags]
+      options:
+        - name: access-key
+          usage: The access key for the vCluster to connect to the platform. If empty, the CLI will generate one
+        - name: all
+          default_value: "false"
+          usage: all will try to add Virtual Cluster found in all namespaces in the host cluster. If this flag is set, any provided vCluster name argument is ignored
+        - name: ca-data
+          usage: additional, base64 encoded certificate authority data that will be passed to the platform secret
+        - name: external
+          default_value: "true"
+          usage: If the virtual cluster is managed by the platform agent or externally. If set to false, the host cluster must be added to the vCluster Platform prior to the add command
+        - name: host
+          usage: The host where to reach the platform
+        - name: import-name
+          usage: The name of the vCluster under projects. If unspecified, will use the vcluster name
+        - name: insecure
+          default_value: "false"
+          usage: If the platform host is insecure
+        - name: project
+          usage: The project to import the vCluster into
+        - name: restart
+          default_value: "true"
+          usage: Restart the vCluster control-plane after creating the platform secret
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform backup
+      synopsis: Backup subcommands
+      description: |-
+        #######################################################
+        ############ vcluster platform backup #################
+        #######################################################
+      usage: vcluster platform backup [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform backup management - Create a vCluster platform management plane backup
+    - name: vcluster platform backup management
+      synopsis: Create a vCluster platform management plane backup
+      description: |-
+        ########################################################
+        ################ loft backup management ################
+        ########################################################
+
+        Backup creates a backup for the vCluster platform management plane
+
+        Example:
+        vcluster platform backup management
+        ########################################################
+      usage: vcluster platform backup management [flags]
+      options:
+        - name: filename
+          default_value: backup.yaml
+          usage: The filename to write the backup to
+        - name: namespace
+          usage: The namespace vCluster platform was installed into
+        - name: skip
+          default_value: '[]'
+          usage: 'What resources the backup should skip. Valid options are: users, teams, accesskeys, sharedsecrets, clusters and clusteraccounttemplates'
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform connect
+      synopsis: connects to vCluster platform resources
+      description: |-
+        ########################################################
+        ##################### loft connect #####################
+        ########################################################
+
+
+        Activates a kube context for the given cluster / management / namespace / vcluster.
+      usage: vcluster platform connect [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform connect cluster - Creates a kube context for the given cluster
+        - vcluster platform connect management - Creates a kube context to the vCluster platform Management API
+        - vcluster platform connect namespace - Creates a kube context for the given vCluster platform namespace
+        - vcluster platform connect vcluster - Connect to a virtual cluster
+    - name: vcluster platform connect cluster
+      synopsis: Creates a kube context for the given cluster
+      description: |-
+        ########################################################
+        ################# loft connect cluster #################
+        ########################################################
+
+        Creates a new kube context for the given cluster, if
+        it does not yet exist.
+
+        Example:
+        vcluster platform connect cluster mycluster
+        ########################################################
+      usage: vcluster platform connect cluster [flags]
+      options:
+        - name: print
+          default_value: "false"
+          usage: When enabled prints the context to stdout
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform connect management
+      synopsis: Creates a kube context to the vCluster platform Management API
+      description: |-
+        #########################################################
+        ################ loft connect management ################
+        #########################################################
+
+        Creates a new kube context to the vCluster platform Management API.
+
+        Example:
+        vcluster platform connect management
+        ########################################################
+      usage: vcluster platform connect management [flags]
+      options:
+        - name: print
+          default_value: "false"
+          usage: When enabled prints the context to stdout
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform connect namespace
+      synopsis: Creates a kube context for the given vCluster platform namespace
+      description: |-
+        ########################################################
+        ################ loft connect namespace ################
+        ########################################################
+
+        Creates a new kube context for the given vCluster platform namespace.
+
+        Example:
+        vcluster platform connect namespace
+        vcluster platform connect namespace myspace
+        vcluster platform connect namespace myspace --project myproject
+        ########################################################
+      usage: vcluster platform connect namespace SPACE_NAME [flags]
+      options:
+        - name: cluster
+          usage: The cluster to use
+        - name: disable-direct-cluster-endpoint
+          default_value: "false"
+          usage: When enabled does not use an available direct cluster endpoint to connect to the cluster
+        - name: print
+          default_value: "false"
+          usage: When enabled prints the context to stdout
+        - name: project
+          shorthand: p
+          usage: The project to use
+        - name: skip-wait
+          default_value: "false"
+          usage: If true, will not wait until the namespace is running
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform connect vcluster
+      synopsis: Connect to a virtual cluster
+      description: |-
+        #########################################################################
+        ################## vcluster platform connect vcluster ###################
+        #########################################################################
+        Connect to a virtual cluster
+
+        Example:
+        vcluster platform connect vcluster test --namespace test
+        # Open a new bash with the vcluster KUBECONFIG defined
+        vcluster platform connect vcluster test -n test -- bash
+        vcluster platform connect vcluster test -n test -- kubectl get ns
+        #########################################################################
+      usage: vcluster platform connect vcluster VCLUSTER_NAME [flags]
+      options:
+        - name: address
+          usage: The local address to start port forwarding under
+        - name: background-proxy
+          default_value: "true"
+          usage: Try to use a background-proxy to access the vCluster. Only works if docker is installed and reachable
+        - name: background-proxy-image
+          default_value: 'ghcr.io/loft-sh/vcluster-pro:'
+          usage: The image to use for the background proxy. Only used if --background-proxy is enabled.
+        - name: cluster-role
+          usage: If specified, vCluster will create the service account if it does not exist and also add a cluster role binding for the given cluster role to it. Requires --service-account to be set
+        - name: insecure
+          default_value: "false"
+          usage: If specified, vCluster will create the kube config with insecure-skip-tls-verify
+        - name: local-port
+          default_value: "0"
+          usage: The local port to forward the virtual cluster to. If empty, vCluster will use a random unused port
+        - name: pod
+          usage: The pod to connect to
+        - name: print
+          default_value: "false"
+          usage: When enabled prints the context to stdout
+        - name: project
+          usage: The platform project the vCluster is in
+        - name: server
+          usage: The server to connect to
+        - name: service-account
+          usage: If specified, vCluster will create a service account token to connect to the virtual cluster instead of using the default client cert / key. Service account must exist and can be used as namespace/name.
+        - name: token-expiration
+          default_value: "0"
+          usage: If specified, vCluster will create the service account token for the given duration in seconds. Defaults to eternal
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform create
+      synopsis: Creates vCluster platform resources
+      description: |-
+        #########################################################
+        ###################### loft create ######################
+        #########################################################
+      usage: vcluster platform create [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform create accesskey - Creates a new access key for the current user
+        - vcluster platform create namespace - Creates a new vCluster platform namespace in the given cluster
+        - vcluster platform create vcluster - Creates a new virtual cluster
+    - name: vcluster platform create accesskey
+      synopsis: Creates a new access key for the current user
+      description: |-
+        ########################################################
+        ################ loft create access key ################
+        ########################################################
+
+        Creates a new access key for the current user.
+        Example:
+        vcluster platform create accesskey test
+        # To connect vClusters to the platform
+        vcluster platform create accesskey test --vcluster-role
+        vcluster platform create accesskey test --in-cluster --user admin
+        ########################################################
+      usage: vcluster platform create accesskey NAMESPACE_NAME [flags]
+      options:
+        - name: display-name
+          usage: The display name of the access key as shown in the UI
+        - name: expire-after
+          usage: The duration after which the access key will expire, e.g. 1h, 1d, 1w
+        - name: in-cluster
+          default_value: "false"
+          usage: If true, the access key will be created in the current Kubernetes context instead of using the platform api. This allows access key creation without the need to be already logged in.
+        - name: user
+          usage: The user to create the access key for
+        - name: vcluster-role
+          default_value: "false"
+          usage: If true, the access key can be used to connect vClusters to the platform
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform create namespace
+      synopsis: Creates a new vCluster platform namespace in the given cluster
+      description: |-
+        #########################################################
+        ################# loft create namespace #################
+        #########################################################
+
+        Creates a new vCluster platform namespace for the given project, if
+        it does not yet exist.
+        Example:
+        vcluster platform create namespace myspace
+        vcluster platform create namespace myspace --project myproject
+        vcluster platform create namespace myspace --project myproject --team myteam
+        ########################################################
+      usage: vcluster platform create namespace NAMESPACE_NAME [flags]
+      options:
+        - name: annotations
+          default_value: '[]'
+          usage: Comma separated annotations to apply to the namespace
+        - name: cluster
+          usage: The cluster to use
+        - name: create-context
+          default_value: "true"
+          usage: If loft should create a kube context for the namespace
+        - name: description
+          usage: The description to show in the UI for this namespace
+        - name: disable-direct-cluster-endpoint
+          default_value: "false"
+          usage: When enabled does not use an available direct cluster endpoint to connect to the namespace
+        - name: display-name
+          usage: The display name to show in the UI for this namespace
+        - name: labels
+          shorthand: l
+          default_value: '[]'
+          usage: Comma separated labels to apply to the namespace
+        - name: link
+          default_value: '[]'
+          usage: |-
+            Labeled Links to annotate the object with.
+            These links will be visible from the UI. When used with update, existing links will be replaced.
+            E.g. --link 'Prod=http://exampleprod.com,Dev=http://exampledev.com'
+        - name: parameters
+          usage: The file where the parameter values for the apps are specified
+        - name: project
+          shorthand: p
+          usage: The project to use
+        - name: recreate
+          default_value: "false"
+          usage: If enabled and there already exists a namespace with this name, Loft will delete it first
+        - name: set
+          default_value: '[]'
+          usage: Allows specific template parameters to be set. E.g. --set myParameter=myValue
+        - name: skip-wait
+          default_value: "false"
+          usage: If true, will not wait until the namespace is running
+        - name: switch-context
+          default_value: "true"
+          usage: If loft should switch the current context to the new context
+        - name: team
+          usage: The team to create the namespace for
+        - name: template
+          usage: The namespace template to use
+        - name: template-version
+          usage: The template version to use
+        - name: update
+          default_value: "false"
+          usage: If enabled and a namespace already exists, will update the template, version and parameters
+        - name: use
+          default_value: "false"
+          usage: If loft should use the namespace if its already there
+        - name: user
+          usage: The user to create the namespace for
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform create vcluster
+      synopsis: Creates a new virtual cluster
+      description: |-
+        #########################################################################
+        ################### vcluster platform create vcluster ###################
+        #########################################################################
+        Creates a new virtual cluster
+
+        Example:
+        vcluster platform create vcluster test --namespace test
+        #########################################################################
+      usage: vcluster platform create vcluster VCLUSTER_NAME [flags]
+      options:
+        - name: annotations
+          default_value: '[]'
+          usage: Comma separated annotations to apply to the virtualclusterinstance
+        - name: chart-name
+          default_value: vcluster
+          usage: The virtual cluster chart name to use
+        - name: chart-repo
+          default_value: https://charts.loft.sh
+          usage: The virtual cluster chart repo to use
+        - name: chart-version
+          usage: The virtual cluster chart version to use (e.g. v0.9.1)
+        - name: cluster
+          usage: The vCluster platform connected cluster to use
+        - name: connect
+          default_value: "true"
+          usage: If true will run vcluster connect directly after the vcluster was created
+        - name: description
+          usage: The description to show in the platform UI for this virtual cluster
+        - name: display-name
+          usage: The display name to show in the platform UI for this virtual cluster
+        - name: expose
+          default_value: "false"
+          usage: If true will create a load balancer service to expose the vcluster endpoint
+        - name: kube-config-context-name
+          usage: If set, will override the context name of the generated virtual cluster kube config with this name
+        - name: labels
+          shorthand: l
+          default_value: '[]'
+          usage: Comma separated labels to apply to the virtualclusterinstance
+        - name: link
+          default_value: '[]'
+          usage: A link to add to the vCluster. E.g. --link 'prod=http://exampleprod.com'
+        - name: parameters
+          usage: If a template is used, this can be used to use a file for the parameters. E.g. --parameters path/to/my/file.yaml
+        - name: params
+          usage: If a template is used, this can be used to use a file for the parameters. E.g. --params path/to/my/file.yaml
+        - name: print
+          default_value: "false"
+          usage: If enabled, prints the context to the console
+        - name: project
+          usage: The vCluster platform project to use
+        - name: recreate
+          default_value: "false"
+          usage: If enabled and there already exists a virtual cluster with this name, it will be deleted first
+        - name: set
+          default_value: '[]'
+          usage: Set values for helm. E.g. --set 'persistence.enabled=true'
+        - name: set-parameters
+          default_value: '[]'
+          usage: If a template is used, this can be used to set a specific parameter. E.g. --set-parameter 'my-param=my-value'
+        - name: set-params
+          default_value: '[]'
+          usage: If a template is used, this can be used to set a specific parameter. E.g. --set-param 'my-param=my-value'
+        - name: skip-wait
+          default_value: "false"
+          usage: If true, will not wait until the virtual cluster is running
+        - name: team
+          usage: The team to create the space for
+        - name: template
+          usage: The vCluster platform template to use
+        - name: template-version
+          usage: The vCluster platform template version to use
+        - name: upgrade
+          default_value: "false"
+          usage: If true will try to upgrade the vcluster instead of failing if it already exists
+        - name: use
+          default_value: "false"
+          usage: If the platform should use the virtual cluster if its already there
+        - name: user
+          usage: The user to create the space for
+        - name: values
+          shorthand: f
+          default_value: '[]'
+          usage: Path where to load extra helm values from
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform delete
+      synopsis: Deletes vCluster platform resources
+      description: |-
+        #########################################################
+        ###################### loft delete ######################
+        #########################################################
+      usage: vcluster platform delete [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform delete namespace - Deletes a vCluster platform namespace from a cluster
+        - vcluster platform delete vcluster - Deletes a virtual cluster
+    - name: vcluster platform delete namespace
+      synopsis: Deletes a vCluster platform namespace from a cluster
+      description: |-
+        #########################################################
+        ################# loft delete namespace #################
+        #########################################################
+
+        Deletes a vCluster platform namespace from a cluster
+
+        Example:
+        vcluster platform delete namespace myspace
+        vcluster platform delete namespace myspace --project myproject
+        ########################################################
+      usage: vcluster platform delete namespace NAMESPACE_NAME [flags]
+      options:
+        - name: cluster
+          usage: The cluster to use
+        - name: delete-context
+          default_value: "true"
+          usage: If the corresponding kube context should be deleted if there is any
+        - name: project
+          shorthand: p
+          usage: The project to use
+        - name: wait
+          default_value: "false"
+          usage: Termination of this command waits for namespace to be deleted
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform delete vcluster
+      synopsis: Deletes a virtual cluster
+      description: |-
+        #########################################################################
+        ################### vcluster platform delete vcluster ###################
+        #########################################################################
+        Deletes a virtual cluster
+
+        Example:
+        vcluster platform delete vcluster --namespace test
+        #########################################################################
+      usage: vcluster platform delete vcluster VCLUSTER_NAME [flags]
+      options:
+        - name: delete-context
+          default_value: "true"
+          usage: If the corresponding kube context should be deleted if there is any
+        - name: project
+          usage: The vCluster platform project to use
+        - name: wait
+          default_value: "true"
+          usage: If enabled, vcluster will wait until the vcluster is deleted
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform destroy
+      synopsis: Destroy a vCluster Platform instance
+      description: |-
+        ########################################################
+        ############# vcluster platform destroy ##################
+        ########################################################
+
+        Destroys a vCluster Platform instance in your Kubernetes cluster or Docker.
+
+        IMPORTANT: This action is done against the cluster the the kube-context is pointing to, and not the vCluster Platform instance that is logged in.
+        It does not require logging in to vCluster Platform.
+
+        Please make sure you meet the following requirements
+        before running this command:
+
+        1. Current kube-context has admin access to the cluster
+        2. Helm v3 must be installed
+
+        If you installed vCluster platform using '--docker', use 'vcluster platform destroy --docker' to clean up the Docker container and volume.
+
+        VirtualClusterInstances managed with driver helm will be deleted, but the underlying virtual cluster will not be uninstalled.
+
+        ########################################################
+      usage: vcluster platform destroy [flags]
+      options:
+        - name: context
+          usage: The kube context to use for installation
+        - name: delete-namespace
+          default_value: "true"
+          usage: Whether to delete the namespace or not
+        - name: docker
+          default_value: "false"
+          usage: If true, destroys the vCluster platform docker container and volume instead of the Kubernetes installation
+        - name: force
+          default_value: "false"
+          usage: Try uninstalling even if the platform is not installed. '--namespace' is required if true
+        - name: force-remove-finalizers
+          default_value: "false"
+          usage: IMPORTANT! Removing finalizers may cause unintended behaviours like leaving resources behind, but will ensure the platform is uninstalled.
+        - name: ignore-not-found
+          default_value: "false"
+          usage: Exit successfully if platform installation is not found
+        - name: namespace
+          usage: The namespace vCluster Platform is installed in
+        - name: non-interactive
+          default_value: "false"
+          usage: Will not prompt for confirmation
+        - name: timeout-minutes
+          default_value: "5"
+          usage: How long to try deleting the platform before giving up. May increase when removing finalizers if --force-remove-finalizers is used
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform get
+      synopsis: Retrieves and display informations
+      description: |-
+        ########################################################
+        ####################### loft get #######################
+        ########################################################
+      usage: vcluster platform get [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform get cluster - Prints the current cluster
+        - vcluster platform get cluster-access-key - Retrieve the network peer cluster access key
+        - vcluster platform get current-user - Retrieves the current logged in user
+        - vcluster platform get secret - Returns the key value of a project / shared secret
+    - name: vcluster platform get cluster
+      synopsis: Prints the current cluster
+      usage: vcluster platform get cluster [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform get cluster-access-key
+      synopsis: Retrieve the network peer cluster access key
+      description: |-
+        #########################################################
+        ############## loft get cluster-access-key ##############
+        #########################################################
+
+        Returns the Network Peer Cluster Token
+
+        Example:
+        vcluster platform get cluster-access-key [CLUSTER_NAME]
+        ########################################################
+      usage: vcluster platform get cluster-access-key CLUSTER_NAME [flags]
+      options:
+        - name: output
+          shorthand: o
+          default_value: text
+          usage: 'Output format. One of: (json, yaml, text)'
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform get current-user
+      synopsis: Retrieves the current logged in user
+      description: |-
+        ########################################################
+        ############ loft platform get current-user ############
+        ########################################################
+
+        Returns the currently logged in user
+
+        Example:
+        vcluster platform get current-user
+        ########################################################
+      usage: vcluster platform get current-user [flags]
+      options:
+        - name: output
+          shorthand: o
+          default_value: value
+          usage: 'Output format. One of: (json, yaml, value, name).'
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform get secret
+      synopsis: Returns the key value of a project / shared secret
+      description: |-
+        #########################################################
+        #################### loft get secret ####################
+        #########################################################
+
+        Returns the key value of a project / shared secret.
+
+        Example:
+        vcluster platform get secret test-secret.key
+        vcluster platform get secret test-secret.key --project myproject
+
+        For shared secret, if the --namespace flag is not set, it looks for the secrets in vcluster-platform and loft namespaces.
+        ########################################################
+      usage: vcluster platform get secret SECRET_NAME [flags]
+      options:
+        - name: all
+          shorthand: a
+          default_value: "false"
+          usage: Display all secret keys
+        - name: namespace
+          shorthand: "n"
+          usage: The namespace in the vCluster platform cluster to read the secret from. If omitted will use the namespace where vCluster platform is installed in
+        - name: output
+          shorthand: o
+          usage: 'Output format. One of: (json, yaml, value). If the --all flag is passed ''yaml'' will be the default format'
+        - name: project
+          shorthand: p
+          usage: The project to read the project secret from.
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform list
+      synopsis: Lists configuration
+      description: |-
+        #########################################################
+        ####################### loft list #######################
+        #########################################################
+      usage: vcluster platform list [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform list clusters - Lists the loft clusters you have access to
+        - vcluster platform list namespaces - Lists the vCluster platform namespaces you have access to
+        - vcluster platform list projects - Lists the loft projects you have access to
+        - vcluster platform list secrets - Lists all the shared secrets you have access to
+        - vcluster platform list teams - Lists the vCluster platform teams you are member of
+        - vcluster platform list vclusters - Lists all virtual clusters that are connected to the current platform
+    - name: vcluster platform list clusters
+      synopsis: Lists the loft clusters you have access to
+      description: |-
+        ########################################################
+        ################## loft list clusters ##################
+        ########################################################
+
+        List the vcluster platform clusters you have access to
+
+        Example:
+        vcluster platform list clusters
+        ########################################################
+      usage: vcluster platform list clusters [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform list namespaces
+      synopsis: Lists the vCluster platform namespaces you have access to
+      description: |-
+        ########################################################
+        ################# loft list namespaces #################
+        ########################################################
+
+        List the vCluster platform namespaces you have access to
+        Example:
+        vcluster platform list namespaces
+        ########################################################
+      usage: vcluster platform list namespaces [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform list projects
+      synopsis: Lists the loft projects you have access to
+      description: |-
+        ########################################################
+        ################## loft list projects ##################
+        ########################################################
+
+        List the vcluster platform projects you have access to
+
+        Example:
+        vcluster platform list projects
+        ########################################################
+      usage: vcluster platform list projects [flags]
+      options:
+        - name: output
+          default_value: table
+          usage: Choose the format of the output. [table|json]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform list secrets
+      synopsis: Lists all the shared secrets you have access to
+      description: |-
+        #########################################################
+        ################### loft list secrets ###################
+        #########################################################
+
+        List the shared secrets you have access to
+
+        Example:
+        vcluster platform list secrets
+        ########################################################
+      usage: vcluster platform list secrets [flags]
+      options:
+        - name: all
+          shorthand: a
+          default_value: "false"
+          usage: Display global and project secrets. May be used with the --project flag to display global secrets and a subset of project secrets
+        - name: all-projects
+          default_value: "false"
+          usage: Display project secrets for all projects.
+        - name: namespace
+          shorthand: "n"
+          usage: The namespace in the vCluster cluster to read global secrets from. If omitted will query all accessible global secrets
+        - name: project
+          shorthand: p
+          default_value: '[]'
+          usage: The project(s) to read project secrets from. If omitted will list global secrets
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform list teams
+      synopsis: Lists the vCluster platform teams you are member of
+      description: |-
+        #########################################################
+        #################### loft list teams ####################
+        #########################################################
+
+        List the vCluster platform teams you are a member of
+
+        Example:
+        vcluster platform list teams
+        ########################################################
+      usage: vcluster platform list teams [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform list vclusters
+      synopsis: Lists all virtual clusters that are connected to the current platform
+      description: |-
+        ##########################################################################
+        #################### vcluster platform list vclusters ####################
+        ##########################################################################
+        Lists all virtual clusters that are connected to the current platform
+
+        Example:
+        vcluster platform list vclusters
+        ##########################################################################
+      usage: vcluster platform list vclusters [flags]
+      options:
+        - name: output
+          default_value: table
+          usage: Choose the format of the output. [table|json]
+        - name: owner
+          default_value: "false"
+          usage: List virtual clusters owned by the currently logged-in user
+        - name: project
+          shorthand: p
+          usage: The project to use
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform login
+      synopsis: Login to a vCluster platform instance
+      description: |-
+        ########################################################
+        ############### vcluster platform login ################
+        ########################################################
+        Login into vCluster platform
+
+        Example:
+        vcluster platform login https://my-vcluster-platform.com
+        vcluster platform login https://my-vcluster-platform.com --access-key myaccesskey
+        ########################################################
+      usage: vcluster platform login [VCLUSTER_PLATFORM_HOST] [flags]
+      options:
+        - name: access-key
+          usage: The access key to use
+        - name: docker-login
+          default_value: "true"
+          usage: If true, will log into the docker image registries the user has image pull secrets for
+        - name: insecure
+          default_value: "false"
+          usage: Allow login into an insecure Loft instance
+        - name: use-driver
+          usage: Switch vCluster driver between platform, helm, and docker
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform logout
+      synopsis: Log out of a vCluster platform instance
+      description: |-
+        ########################################################
+        ############## vcluster platform logout ################
+        ########################################################
+        Log out of vCluster platform
+
+        Example:
+        vcluster platform logout
+        ########################################################
+      usage: vcluster platform logout [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform reset
+      synopsis: Reset configuration
+      description: |-
+        ########################################################
+        ############# vcluster platform reset ##################
+        ########################################################
+      usage: vcluster platform reset [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform reset password - Resets the password of a user
+    - name: vcluster platform reset password
+      synopsis: Resets the password of a user
+      description: |-
+        ########################################################
+        ######### vcluster platform reset password #############
+        ########################################################
+        Resets the password of a user.
+
+        Example:
+        vcluster platform reset password
+        vcluster platform reset password --user admin
+        #######################################################
+      usage: vcluster platform reset password [flags]
+      options:
+        - name: create
+          default_value: "false"
+          usage: Creates the user if it does not exist
+        - name: force
+          default_value: "false"
+          usage: If user had no password will create one
+        - name: namespace
+          default_value: vcluster-platform
+          usage: The namespace to use
+        - name: password
+          usage: The new password to use
+        - name: user
+          default_value: admin
+          usage: The name of the user to reset the password
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform set
+      synopsis: Set configuration
+      description: |-
+        ########################################################
+        ####################### loft set #######################
+        ########################################################
+      usage: vcluster platform set [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform set secret - Sets the key value of a project / shared secret
+    - name: vcluster platform set secret
+      synopsis: Sets the key value of a project / shared secret
+      description: |-
+        #########################################################
+        #################### loft set secret ####################
+        #########################################################
+
+        Sets the key value of a project / shared secret.
+
+
+        Example:
+        vcluster platform set secret test-secret.key value
+        vcluster platform set secret test-secret.key value --project myproject
+        #######################################################
+      usage: vcluster platform set secret SECRET_NAME SECRET_VALUE [flags]
+      options:
+        - name: namespace
+          shorthand: "n"
+          usage: The namespace in the vCluster platform cluster to create the secret in. If omitted will use the namespace were vCluster platform is installed in
+        - name: project
+          shorthand: p
+          usage: The project to create the project secret in.
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform share
+      synopsis: Shares a virtual cluster / namespace with another vCluster platform user or team
+      description: |-
+        #########################################################
+        ################ vcluster platform share ################
+        #########################################################
+      usage: vcluster platform share [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform share namespace - Shares a vCluster platform namespace with another platform user or team
+        - vcluster platform share vcluster - Shares a virtual cluster with another vCluster platform user or team
+    - name: vcluster platform share namespace
+      synopsis: Shares a vCluster platform namespace with another platform user or team
+      description: |-
+        ########################################################
+        ################# loft share namespace #################
+        ########################################################
+
+        Shares a vCluster platform namespace with another platform user or team. The user
+        or team need to have access to the cluster.
+        Example:
+        vcluster platform share namespace myspace
+        vcluster platform share namespace myspace --project myproject
+        vcluster platform share namespace myspace --project myproject --user admin
+        ########################################################
+      usage: vcluster platform share namespace NAMESPACE_NAME [flags]
+      options:
+        - name: cluster
+          usage: The cluster to use
+        - name: cluster-role
+          default_value: loft-cluster-space-admin
+          usage: The cluster role which is assigned to the user or team for that namespace
+        - name: project
+          shorthand: p
+          usage: The project to use
+        - name: team
+          usage: The team to share the namespace with. The team needs to have access to the cluster
+        - name: user
+          usage: The user to share the namespace with. The user needs to have access to the cluster
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform share vcluster
+      synopsis: Shares a virtual cluster with another vCluster platform user or team
+      description: |-
+        ##########################################################################
+        #################### vcluster platform share vcluster ####################
+        ##########################################################################
+        Shares a virtual cluster with another vCluster platform user or team
+
+        Example:
+        vcluster platform share vcluster myvcluster
+        vcluster platform share vcluster myvcluster --project myproject
+        vcluster platform share vcluster myvcluster --project myproject --user admin
+        ##########################################################################
+      usage: vcluster platform share vcluster VCLUSTER_NAME [flags]
+      options:
+        - name: cluster
+          usage: The cluster to use
+        - name: cluster-role
+          default_value: loft-cluster-space-admin
+          usage: The cluster role which is assigned to the user or team for that space
+        - name: project
+          usage: The project to use
+        - name: team
+          usage: The team to share the space with. The team needs to have access to the cluster
+        - name: user
+          usage: The user to share the space with. The user needs to have access to the cluster
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform sleep
+      synopsis: Put a virtual cluster / namespace to sleep
+      description: |-
+        ########################################################
+        ###################### loft sleep ######################
+        ########################################################
+
+
+        Put a virtual cluster / namespace to sleep.
+      usage: vcluster platform sleep [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform sleep namespace - Put a vCluster platform namespace to sleep
+        - vcluster platform sleep vcluster - Put a virtual cluster to sleep
+    - name: vcluster platform sleep namespace
+      synopsis: Put a vCluster platform namespace to sleep
+      description: |-
+        ########################################################
+        ################# loft sleep namespace #################
+        ########################################################
+
+        Sleep puts a vCluster platform namespace to sleep
+        Example:
+        vcluster platform sleep namespace myspace
+        vcluster platform sleep namespace myspace --project myproject
+        #######################################################
+      usage: vcluster platform sleep namespace NAMESPACE_NAME [flags]
+      options:
+        - name: cluster
+          usage: The cluster to use
+        - name: prevent-wakeup
+          default_value: "-1"
+          usage: The amount of seconds this namespace should sleep until it can be woken up again (use 0 for infinite sleeping). During this time the namespace can only be woken up by `vcluster platform wakeup namespace`, manually deleting the annotation on the namespace or through the loft UI
+        - name: project
+          shorthand: p
+          usage: The project to use
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform sleep vcluster
+      synopsis: Put a virtual cluster to sleep
+      description: |-
+        ########################################################################
+        ################### vcluster platform sleep vcluster ###################
+        ########################################################################
+        Sleep will stop a virtual cluster and free all its used
+        computing resources.
+
+        Sleep will scale down the virtual cluster and delete
+        all workloads created through the virtual cluster. Upon resume,
+        all workloads will be recreated. Other resources such
+        as persistent volume claims, services etc. will not be affected.
+
+        Example:
+        vcluster platform sleep vcluster test --namespace test
+        ########################################################################
+      usage: vcluster platform sleep vcluster VCLUSTER_NAME [flags]
+      options:
+        - name: prevent-wakeup
+          default_value: "-1"
+          usage: The amount of seconds this vcluster should sleep until it can be woken up again (use 0 for infinite sleeping). During this time the space can only be woken up by `vcluster resume vcluster`, manually deleting the annotation on the namespace or through the loft UI
+        - name: project
+          usage: The vCluster platform project to use
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform start
+      synopsis: Start a vCluster platform instance and connect via port-forwarding
+      description: |-
+        ########################################################
+        ############# vcluster platform start ##################
+        ########################################################
+
+        Starts a vCluster platform instance in your Kubernetes cluster
+        and then establishes a port-forwarding connection.
+
+        Please make sure you meet the following requirements
+        before running this command:
+
+        1. Current kube-context has admin access to the cluster
+        2. Helm v3 must be installed
+        3. kubectl must be installed
+
+        ########################################################
+      usage: vcluster platform start [flags]
+      options:
+        - name: chart-name
+          default_value: vcluster-platform
+          usage: The chart name to deploy vCluster platform
+        - name: chart-path
+          usage: The vCluster platform chart path to deploy vCluster platform
+        - name: chart-repo
+          default_value: https://charts.loft.sh/
+          usage: The chart repo to deploy vCluster platform
+        - name: context
+          usage: The kube context to use for installation
+        - name: docker
+          default_value: "false"
+          usage: If true, vCluster platform will be installed in Docker
+        - name: email
+          usage: The email to use for the installation
+        - name: host
+          usage: Provide a hostname to enable ingress and configure its hostname
+        - name: local-port
+          usage: The local port to bind to if using port-forwarding
+        - name: namespace
+          default_value: vcluster-platform
+          usage: The namespace to install vCluster platform into
+        - name: no-login
+          default_value: "false"
+          usage: If true, vCluster platform will not login to a vCluster platform instance on start
+        - name: no-port-forwarding
+          default_value: "false"
+          usage: If true, vCluster platform will not do port forwarding after installing it
+        - name: no-tunnel
+          default_value: "false"
+          usage: If true, vCluster platform will not create a loft.host tunnel for this installation
+        - name: no-wait
+          default_value: "false"
+          usage: If true, vCluster platform will not wait after installing it
+        - name: password
+          usage: The password to use for the admin account. (If empty this will be the namespace UID)
+        - name: reset
+          default_value: "false"
+          usage: If true, existing vCluster Platform resources, including the deployment, will be deleted before installing vCluster platform
+        - name: reuse-values
+          default_value: "true"
+          usage: Reuse previous vCluster platform helm values on upgrade
+        - name: upgrade
+          default_value: "false"
+          usage: If true, vCluster platform will try to upgrade the release
+        - name: values
+          usage: Path to a file for extra vCluster platform helm chart values
+        - name: version
+          default_value: latest
+          usage: The vCluster platform version to install
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform wakeup
+      synopsis: Wake up a virtual cluster / namespace
+      description: |-
+        #########################################################
+        ###################### loft wakeup ######################
+        #########################################################
+
+
+        Wake up a virtual cluster / namespace.
+      usage: vcluster platform wakeup [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster platform wakeup namespace - Wakes up a vCluster platform namespace
+        - vcluster platform wakeup vcluster - Lists all virtual clusters that are connected to the current platform
+    - name: vcluster platform wakeup namespace
+      synopsis: Wakes up a vCluster platform namespace
+      description: |-
+        #########################################################
+        ################# loft wakeup namespace #################
+        #########################################################
+
+        wakeup resumes a sleeping vCluster platform namespace
+        Example:
+        vcluster platform wakeup namespace myspace
+        vcluster platform wakeup namespace myspace --project myproject
+        #######################################################
+      usage: vcluster platform wakeup namespace NAMESPACE_NAME [flags]
+      options:
+        - name: cluster
+          usage: The cluster to use
+        - name: project
+          shorthand: p
+          usage: The project to use
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster platform wakeup vcluster
+      synopsis: Lists all virtual clusters that are connected to the current platform
+      description: |-
+        #########################################################################
+        ################### vcluster platform wakeup vcluster ###################
+        #########################################################################
+        Wakeup will start a virtual cluster after it was put to sleep.
+        vCluster will recreate all the workloads after it has
+        started automatically.
+
+        Example:
+        vcluster platform wakeup vcluster test --namespace test
+        #########################################################################
+      usage: vcluster platform wakeup vcluster VCLUSTER_NAME [flags]
+      options:
+        - name: project
+          usage: The vCluster platform project to use
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster registry
+      synopsis: vCluster registry subcommand
+      description: |-
+        #######################################################
+        ################### vcluster registry ####################
+        #######################################################
+      usage: vcluster registry [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster registry proxy - Proxy the vCluster registry to use it with docker and other tools
+        - vcluster registry pull - Pull a docker image from a container registry and save it to a tarball that can be imported into the vCluster registry
+        - vcluster registry push - Push a docker image, archive or helm chart into vCluster registry
+    - name: vcluster registry proxy
+      synopsis: Proxy the vCluster registry to use it with docker and other tools
+      usage: vcluster registry proxy [flags]
+      options:
+        - name: port
+          default_value: "15000"
+          usage: The local port to proxy the registry to
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster registry pull
+      synopsis: Pull a docker image from a container registry and save it to a tarball that can be imported into the vCluster registry
+      usage: vcluster registry pull [flags]
+      options:
+        - name: architecture
+          default_value: amd64
+          usage: Architecture of the image to pull. If not specified, the architecture will be detected automatically. Use 'all' to pull all architectures.
+        - name: destination
+          usage: Path to the destination directory. If not specified, the images will be pulled to the current directory.
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster registry push
+      synopsis: Push a docker image, archive or helm chart into vCluster registry
+      usage: vcluster registry push [flags]
+      options:
+        - name: architecture
+          default_value: amd64
+          usage: Architecture of the image. E.g. amd64, arm64, etc. Only valid if used together with an image argument. E.g. vcluster registry push nginx --architecture amd64. Use 'all' to push all architectures.
+        - name: archive
+          default_value: '[]'
+          usage: Path to the archive.tar file. Can also be a directory with .tar files. Needs to have the format registry_repository+tag.tar
+        - name: helm-chart
+          default_value: '[]'
+          usage: Path to the helm chart. Can also be a directory with .tgz files.
+        - name: helm-chart-repository
+          default_value: charts
+          usage: Repository in the vCluster registry to push the helm chart to. E.g. charts will allow you to use the helm chart with oci://<vcluster-host>/charts/my-chart-name:version.
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster restore
+      synopsis: Restores a virtual cluster from snapshot
+      description: |-
+        #######################################################
+        ################# vcluster restore ####################
+        #######################################################
+        Restore a virtual cluster.
+
+        Example:
+        # Restore from oci image
+        vcluster restore my-vcluster oci://ghcr.io/my-user/my-repo:my-tag
+        # Restore from s3 bucket
+        vcluster restore my-vcluster s3://my-bucket/my-bucket-key
+        # Restore from vCluster container filesystem
+        vcluster restore my-vcluster container:///data/my-local-snapshot.tar.gz
+        #######################################################
+      usage: vcluster restore VCLUSTER_NAME [flags]
+      options:
+        - name: azure-resource-group
+          usage: Azure resource group where the storage account is located
+        - name: azure-subscription-id
+          usage: Azure subscription ID where the storage account is located
+        - name: pod-env
+          default_value: '[]'
+          usage: 'Additional environment variables for the created pod. Use key=value. E.g.: MY_ENV=my-value'
+        - name: pod-image
+          usage: Image to use for the created pod
+        - name: pod-image-pull-secret
+          default_value: '[]'
+          usage: Additional pull secrets for the created pod
+        - name: pod-mount
+          default_value: '[]'
+          usage: 'Additional mounts for the created pod. Use form <type>:<name>/<key>:<mount>. Supported types are: pvc, secret, configmap. E.g.: pvc:my-pvc:/path-in-pod or secret:my-secret/my-key:/path-in-pod'
+        - name: pod-service-account
+          usage: Service account to use for the created pod
+        - name: restore-volumes
+          default_value: "false"
+          usage: Restore volumes from volume snapshots
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster resume
+      synopsis: Resumes a virtual cluster
+      description: |-
+        #######################################################
+        ################### vcluster resume ###################
+        #######################################################
+        Resume will start a vcluster after it was paused.
+        vcluster will recreate all the workloads after it has
+        started automatically.
+
+        Example:
+        vcluster resume test --namespace test
+        #######################################################
+      usage: vcluster resume VCLUSTER_NAME [flags]
+      options:
+        - name: driver
+          usage: The driver for the virtual cluster, can be either helm, platform, or docker.
+        - name: project
+          usage: '[PLATFORM] The vCluster platform project to use'
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster set
+      synopsis: Set configuration
+      description: |-
+        ########################################################
+        ####################### loft set #######################
+        ########################################################
+      usage: vcluster set [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster set secret - Sets the key value of a project / shared secret
+    - name: vcluster set secret
+      synopsis: Sets the key value of a project / shared secret
+      description: |-
+        #########################################################
+        #################### loft set secret ####################
+        #########################################################
+
+        Sets the key value of a project / shared secret.
+
+
+        Example:
+        vcluster platform set secret test-secret.key value
+        vcluster platform set secret test-secret.key value --project myproject
+        #######################################################
+      usage: vcluster set secret SECRET_NAME SECRET_VALUE [flags]
+      options:
+        - name: namespace
+          shorthand: "n"
+          usage: The namespace in the vCluster platform cluster to create the secret in. If omitted will use the namespace were vCluster platform is installed in
+        - name: project
+          shorthand: p
+          usage: The project to create the project secret in.
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster snapshot
+      synopsis: Snapshot a virtual cluster (deprecated, use 'vcluster snapshot create' instead)
+      description: |-
+        #######################################################
+        ################# vcluster snapshot ###################
+        #######################################################
+        Snapshot a virtual cluster. Deprecated, use 'vcluster snapshot create' instead.
+
+        Example:
+        # Snapshot to oci image
+        vcluster snapshot my-vcluster oci://ghcr.io/my-user/my-repo:my-tag
+        # Snapshot to s3 bucket
+        vcluster snapshot my-vcluster s3://my-bucket/my-bucket-key
+        # Snapshot to vCluster container filesystem
+        vcluster snapshot my-vcluster container:///data/my-local-snapshot.tar.gz
+        #######################################################
+      usage: vcluster snapshot VCLUSTER_NAME [flags]
+      options:
+        - name: azure-resource-group
+          usage: Azure resource group where the storage account is located
+        - name: azure-subscription-id
+          usage: Azure subscription ID where the storage account is located
+        - name: customer-key-encryption-file
+          usage: AWS customer key encryption file used for SSE-C. Mutually exclusive with kms-key-id
+        - name: include-volumes
+          default_value: "false"
+          usage: Create CSI volume snapshots (shared and private nodes only)
+        - name: kms-key-id
+          usage: AWS KMS key ID that is configured for given S3 bucket. If set, aws-kms SSE will be used
+        - name: pod-env
+          default_value: '[]'
+          usage: 'Additional environment variables for the created pod. Use key=value. E.g.: MY_ENV=my-value'
+        - name: pod-exec
+          default_value: "false"
+          usage: Instead of creating a pod, exec into the vCluster container
+        - name: pod-image
+          usage: Image to use for the created pod
+        - name: pod-image-pull-secret
+          default_value: '[]'
+          usage: Additional pull secrets for the created pod
+        - name: pod-mount
+          default_value: '[]'
+          usage: 'Additional mounts for the created pod. Use form <type>:<name>/<key>:<mount>. Supported types are: pvc, secret, configmap. E.g.: pvc:my-pvc:/path-in-pod or secret:my-secret/my-key:/path-in-pod'
+        - name: pod-service-account
+          usage: Service account to use for the created pod
+        - name: server-side-encryption
+          usage: AWS Server-Side encryption algorithm
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster snapshot create - Snapshot a virtual cluster
+        - vcluster snapshot get - Get virtual cluster snapshot
+    - name: vcluster snapshot create
+      synopsis: Snapshot a virtual cluster
+      description: |-
+        ##############################################################
+        ################# vcluster snapshot create ###################
+        ##############################################################
+        Snapshot a virtual cluster. The command creates a snapshot
+        request, which will be processed asynchronously by a vCluster
+        controller.
+
+        Example:
+        # Snapshot to oci image
+        vcluster snapshot create my-vcluster oci://ghcr.io/my-user/my-repo:my-tag
+        # Snapshot to s3 bucket
+        vcluster snapshot create my-vcluster s3://my-bucket/my-bucket-key
+        # Snapshot to vCluster container filesystem
+        vcluster snapshot create my-vcluster container:///data/my-local-snapshot.tar.gz
+        ##############################################################
+      usage: vcluster snapshot create [flags]
+      options:
+        - name: azure-resource-group
+          usage: Azure resource group where the storage account is located
+        - name: azure-subscription-id
+          usage: Azure subscription ID where the storage account is located
+        - name: customer-key-encryption-file
+          usage: AWS customer key encryption file used for SSE-C. Mutually exclusive with kms-key-id
+        - name: include-volumes
+          default_value: "false"
+          usage: Create CSI volume snapshots (shared and private nodes only)
+        - name: kms-key-id
+          usage: AWS KMS key ID that is configured for given S3 bucket. If set, aws-kms SSE will be used
+        - name: server-side-encryption
+          usage: AWS Server-Side encryption algorithm
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster snapshot get
+      synopsis: Get virtual cluster snapshot
+      description: |-
+        ##############################################################
+        ################### vcluster snapshot get ####################
+        ##############################################################
+        Get virtual cluster snapshot.
+
+        Example:
+        # Get snapshot from oci image
+        vcluster snapshot get my-vcluster oci://ghcr.io/my-user/my-repo:my-tag
+        # Get snapshot from s3 bucket
+        vcluster snapshot get my-vcluster s3://my-bucket/my-bucket-key
+        # Get snapshot from vCluster container filesystem
+        vcluster snapshot get my-vcluster container:///data/my-local-snapshot.tar.gz
+        ##############################################################
+      usage: vcluster snapshot get [flags]
+      options:
+        - name: azure-resource-group
+          usage: Azure resource group where the storage account is located
+        - name: azure-subscription-id
+          usage: Azure subscription ID where the storage account is located
+        - name: customer-key-encryption-file
+          usage: AWS customer key encryption file used for SSE-C. Mutually exclusive with kms-key-id
+        - name: include-volumes
+          default_value: "false"
+          usage: Create CSI volume snapshots (shared and private nodes only)
+        - name: kms-key-id
+          usage: AWS KMS key ID that is configured for given S3 bucket. If set, aws-kms SSE will be used
+        - name: server-side-encryption
+          usage: AWS Server-Side encryption algorithm
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster telemetry
+      synopsis: Sets your vcluster telemetry preferences
+      description: |-
+        #######################################################
+        ################## vcluster telemetry #################
+        #######################################################
+        Sets your vcluster telemetry preferences.
+        Default: enabled.
+
+        More information about the collected telmetry is in the
+        docs: https://www.vcluster.com/docs/advanced-topics/telemetry
+      usage: vcluster telemetry [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster telemetry disable - Disables collection of anonymized vcluster telemetry
+        - vcluster telemetry enable - Enables collection of anonymized vcluster telemetry
+    - name: vcluster telemetry disable
+      synopsis: Disables collection of anonymized vcluster telemetry
+      description: |-
+        #######################################################
+        ############## vcluster telemetry disable #############
+        #######################################################
+        Disables collection of anonymized vcluster telemetry.
+
+        More information about the collected telmetry is in the
+        docs: https://www.vcluster.com/docs/advanced-topics/telemetry
+
+        #######################################################
+      usage: vcluster telemetry disable [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster telemetry enable
+      synopsis: Enables collection of anonymized vcluster telemetry
+      description: |-
+        #######################################################
+        ############### vcluster telemetry enable #############
+        #######################################################
+        Enables collection of anonymized vcluster telemetry
+
+        More information about the collected telmetry is in the
+        docs: https://www.vcluster.com/docs/advanced-topics/telemetry
+
+        #######################################################
+      usage: vcluster telemetry enable [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster token
+      synopsis: vCluster token subcommand
+      description: |-
+        #######################################################
+        #################### vcluster token #####################
+        #######################################################
+      usage: vcluster token [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster token create - Create a new node bootstrap token for a vCluster with private nodes enabled.
+        - vcluster token delete - Delete a node bootstrap token for a vCluster with private nodes enabled.
+        - vcluster token list - List all node bootstrap tokens for a vCluster with private nodes enabled.
+    - name: vcluster token create
+      synopsis: Create a new node bootstrap token for a vCluster with private nodes enabled.
+      description: |-
+        ########################################################
+        ################# vcluster token create #################
+        ########################################################
+        Create a new node bootstrap token for a vCluster with private nodes enabled.
+        #######################################################
+      usage: vcluster token create [flags]
+      options:
+        - name: control-plane
+          default_value: "false"
+          usage: If set the created token will be used to join the control plane node. Mutually exclusive with --kubeadm
+        - name: expires
+          default_value: 1h
+          usage: 'The duration the token will be valid for. Format: 1h, 1d, 1w, 1m, 1y. If empty, the token will never expire.'
+        - name: kubeadm
+          default_value: "false"
+          usage: If enabled shows the raw kubeadm join command.
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster token delete
+      synopsis: Delete a node bootstrap token for a vCluster with private nodes enabled.
+      description: |-
+        ########################################################
+        ################# vcluster token delete #################
+        ########################################################
+        Delete a node bootstrap token for a vCluster with private nodes enabled.
+        #######################################################
+      usage: vcluster token delete <token-id> [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster token list
+      synopsis: List all node bootstrap tokens for a vCluster with private nodes enabled.
+      description: |-
+        ########################################################
+        ################# vcluster token list #################
+        ########################################################
+        List all node bootstrap tokens for a vCluster with private nodes enabled.
+        #######################################################
+      usage: vcluster token list [flags]
+      options:
+        - name: output
+          default_value: table
+          usage: Choose the format of the output. [table|json]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster ui
+      synopsis: Start the web UI
+      description: |-
+        ########################################################
+        ##################### vcluster ui ######################
+        ########################################################
+        Open the vCluster platform web UI
+
+        Example:
+        vcluster ui
+        ########################################################
+      usage: vcluster ui [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster upgrade
+      synopsis: Upgrade the vcluster CLI to the newest version
+      description: |-
+        #######################################################
+        ################## vcluster upgrade ###################
+        #######################################################
+        Upgrades the vcluster CLI to the newest version
+        #######################################################
+      usage: vcluster upgrade [flags]
+      options:
+        - name: version
+          usage: The version to update vcluster to. Defaults to the latest stable version available
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster use
+      synopsis: vCluster use subcommand
+      description: |-
+        #######################################################
+        #################### vcluster use #####################
+        #######################################################
+      usage: vcluster use [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+      see_also:
+        - vcluster use driver - Switch the virtual clusters driver between platform, helm, and docker
+    - name: vcluster use driver
+      synopsis: Switch the virtual clusters driver between platform, helm, and docker
+      description: |-
+        ########################################################
+        ################# vcluster use driver #################
+        ########################################################
+        Either use "helm", "platform", or "docker" as the deployment method for managing virtual clusters.
+        #######################################################
+      usage: vcluster use driver [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals
+    - name: vcluster version
+      synopsis: Print the version number of vcluster
+      description: All software has versions. This is Vcluster's.
+      usage: vcluster version [flags]
+      inherited_options:
+        - name: config
+          default_value: /home/nathan/.vcluster/config.json
+          usage: The vcluster CLI config to use (will be created if it does not exist)
+        - name: context
+          usage: The kubernetes config context to use
+        - name: debug
+          default_value: "false"
+          usage: Prints the stack trace if an error occurs
+        - name: log-output
+          default_value: plain
+          usage: The log format to use. Can be either plain, raw or json
+        - name: namespace
+          shorthand: "n"
+          usage: The kubernetes namespace to use
+        - name: silent
+          shorthand: s
+          default_value: "false"
+          usage: Run in silent mode and prevents any vcluster log output except panics & fatals

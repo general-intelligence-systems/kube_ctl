@@ -4,6 +4,7 @@ require 'yaml'
 require 'rubyshell'
 
 require_relative 'helm'
+require_relative 'vcluster'
 require_relative 'ctl/version'
 require 'string_builder'
 require_relative 'ctl/string_builder'

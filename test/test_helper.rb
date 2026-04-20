@@ -8,4 +8,8 @@ module Kube
   module Ctl
     def self.run(args) = args
   end
+
+  module VCluster
+    def self.run(args) = args
+  end
 end
