@@ -11,6 +11,7 @@ jobs:
       contents: write
     outputs:
       tagged: ${{ steps.check.outputs.exists == 'false' }}
+      version: ${{ steps.read.outputs.version }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -52,6 +53,8 @@ jobs:
     needs: tag
     if: needs.tag.outputs.tagged == 'true'
     uses: ./.github/workflows/release.yml
+    with:
+      tag: v${{ needs.tag.outputs.version }}
     permissions:
       contents: write
       id-token: write
