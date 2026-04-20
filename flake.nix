@@ -41,10 +41,10 @@
             owner = "helm";
             repo = "helm";
             rev = "v${version}";
-            hash = pkgs.lib.fakeHash;  # replace after first build
+            hash = "sha256-fbNkmZ23jWqj4E5YeUuzMhxH9DiUfj5F+Vwlvuv6hdA=";
           };
 
-          vendorHash = pkgs.lib.fakeHash;  # replace after first build
+          vendorHash ="sha256-fCU1JfVaezxyqZmzjM7+otDDLvmkfOskqhu5PpDDZUg=";
           subPackages = [ "cmd/helm" ];
           env.CGO_ENABLED = 0;
           ldflags = [
@@ -71,7 +71,7 @@
             owner = "loft-sh";
             repo = "vcluster";
             rev = "v${version}";
-            hash = pkgs.lib.fakeHash;  # replace after first build
+            hash = "sha256-3aZCKKU1DSsay3EN87fk48MwofTcDWgMngqQ+vUV84A=";
           };
 
           vendorHash = null;  # repo vendors its deps
