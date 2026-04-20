@@ -9,6 +9,8 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: write
+    outputs:
+      tagged: ${{ steps.check.outputs.exists == 'false' }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -45,3 +47,12 @@ jobs:
           git config user.email "nathankidd@hey.com"
           git tag -a "$tag" -m "Release $tag"
           git push origin "$tag"
+
+  release:
+    needs: tag
+    if: needs.tag.outputs.tagged == 'true'
+    uses: ./.github/workflows/release.yml
+    permissions:
+      contents: write
+      id-token: write
+    secrets: inherit
