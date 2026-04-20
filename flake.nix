@@ -54,10 +54,43 @@
           ];
           doCheck = false;
         };
+
+        # vCluster CLI. Upstream builds with:
+        #   CGO_ENABLED=0 GOOS=linux GOARCH=<arch> GO111MODULE=on \
+        #     go build -mod vendor -o /vcluster cmd/vclusterctl
+        # (see vcluster's Dockerfile / CONTRIBUTING.md). The repo vendors
+        # deps, so vendorHash = null mirrors the `-mod vendor` behaviour.
+        # The subPackage dir is `vclusterctl`, which produces a binary
+        # named `vclusterctl`; we rename it to `vcluster` in postInstall
+        # to match the name upstream ships on GitHub Releases.
+        vcluster = pkgs.buildGoModule rec {
+          pname = "vcluster";
+          version = "0.33.1";
+
+          src = pkgs.fetchFromGitHub {
+            owner = "loft-sh";
+            repo = "vcluster";
+            rev = "v${version}";
+            hash = pkgs.lib.fakeHash;  # replace after first build
+          };
+
+          vendorHash = null;  # repo vendors its deps
+          subPackages = [ "cmd/vclusterctl" ];
+          env.CGO_ENABLED = 0;
+          ldflags = [
+            "-s" "-w"
+            "-X main.version=v${version}"
+          ];
+          doCheck = false;
+
+          postInstall = ''
+            mv $out/bin/vclusterctl $out/bin/vcluster
+          '';
+        };
       in
       {
         packages = {
-          inherit kubectl helm;
+          inherit kubectl helm vcluster;
           default = kubectl;
         };
 
