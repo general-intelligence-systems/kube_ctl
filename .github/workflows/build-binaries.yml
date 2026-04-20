@@ -2,6 +2,7 @@ name: Build binaries
 
 on:
   workflow_call:
+  workflow_dispatch: 
 
 jobs:
   build:
@@ -22,13 +23,15 @@ jobs:
       - uses: DeterminateSystems/nix-installer-action@main
       - uses: DeterminateSystems/magic-nix-cache-action@main
 
-      - name: Build kubectl and helm
+      - name: Build kubectl, helm, and vcluster
         run: |
-          nix build .#kubectl --system ${{ matrix.nix-system }} -o result-kubectl
-          nix build .#helm    --system ${{ matrix.nix-system }} -o result-helm
+          nix build .#kubectl  --system ${{ matrix.nix-system }} -o result-kubectl
+          nix build .#helm     --system ${{ matrix.nix-system }} -o result-helm
+          nix build .#vcluster --system ${{ matrix.nix-system }} -o result-vcluster
           mkdir -p dist
-          cp -Lf result-kubectl/bin/kubectl dist/kubectl-linux-${{ matrix.arch }}
-          cp -Lf result-helm/bin/helm       dist/helm-linux-${{ matrix.arch }}
+          cp -Lf result-kubectl/bin/kubectl   dist/kubectl-linux-${{ matrix.arch }}
+          cp -Lf result-helm/bin/helm         dist/helm-linux-${{ matrix.arch }}
+          cp -Lf result-vcluster/bin/vcluster dist/vcluster-linux-${{ matrix.arch }}
           chmod +x dist/*
 
       - name: Checksums
