@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require "rake/testtask"
-
-Rake::TestTask.new(:test) do |t|
-  t.libs << "test"
-  t.libs << "lib"
-  t.test_files = FileList["test/**/*_test.rb"]
+task :test do
+  Dir["lib/**/*.rb"].sort.each do |f|
+    sh "ruby", "-I", "lib", "-rminitest/autorun", "-rkube/ctl", f
+  end
 end
 
 task default: :test
