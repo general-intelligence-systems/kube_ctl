@@ -1,5 +1,7 @@
 # kube_ctl
 
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/general-intelligence-systems/kube_ctl)
+
 A Ruby DSL that compiles to kubectl and helm commands. No YAML. No templates. Just Ruby.
 
 ## Usage
