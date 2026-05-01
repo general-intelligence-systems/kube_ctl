@@ -2,11 +2,6 @@
 
 A Ruby DSL that compiles to kubectl and helm commands. No YAML. No templates. Just Ruby.
 
-```ruby
-Kube.ctl { get.pods.o(:wide) }
-# => "get pods -o wide"
-```
-
 ## Usage
 
 Please see the [project documentation](https://general-intelligence-systems.github.io/kube_ctl/) for more details.
