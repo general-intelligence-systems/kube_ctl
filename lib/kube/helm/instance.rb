@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+
 module Kube
   module Helm
     class Instance
@@ -32,604 +33,500 @@ module Kube
   end
 end
 
-if __FILE__ == $0
-  require "bundler/setup"
-  require "minitest/autorun"
-  require "kube/ctl"
+test do
+  require_relative "../../../setup"
 
-  module Kube
-    module Ctl
-      def self.run(args) = args
-    end
+  sb = ->(&block) {
+    Kube.helm(&block)
+  }
 
-    module Helm
-      def self.run(args) = args
-    end
+  # --- helm completion bash ---
 
-    module VCluster
-      def self.run(args) = args
-    end
+  it "helm completion bash" do
+    result = sb.call { completion.bash }
+    result.to_s.should == "completion bash"
   end
 
-  class HelmStringBuilderTest < Minitest::Test
-    def sb(&block)
-      Kube.helm(&block)
-    end
-
-    def assert_buffer(result, expected)
-      assert_equal expected, result.to_a
-    end
-
-    def assert_string(result, expected)
-      assert_equal expected, result.to_s
-    end
-
-    # --- helm completion bash ---
-
-    def test_helm_completion_bash
-      result = sb { completion.bash }
-      assert_buffer(result, [["completion", []], ["bash", []]])
-      assert_string(result, "completion bash")
-    end
-
-    def test_helm_completion_bash_no_descriptions
-      result = sb { completion.bash.no_descriptions(true) }
-      assert_buffer(result, [["completion", []], ["bash", []], ["no_descriptions", [true]]])
-      assert_string(result, "completion bash --no-descriptions")
-    end
-
-    # --- helm completion zsh ---
-
-    def test_helm_completion_zsh
-      result = sb { completion.zsh }
-      assert_buffer(result, [["completion", []], ["zsh", []]])
-      assert_string(result, "completion zsh")
-    end
-
-    def test_helm_completion_zsh_no_descriptions
-      result = sb { completion.zsh.no_descriptions(true) }
-      assert_buffer(result, [["completion", []], ["zsh", []], ["no_descriptions", [true]]])
-      assert_string(result, "completion zsh --no-descriptions")
-    end
-
-    # --- helm completion fish ---
-
-    def test_helm_completion_fish
-      result = sb { completion.fish }
-      assert_buffer(result, [["completion", []], ["fish", []]])
-      assert_string(result, "completion fish")
-    end
-
-    def test_helm_completion_fish_no_descriptions
-      result = sb { completion.fish.no_descriptions(true) }
-      assert_buffer(result, [["completion", []], ["fish", []], ["no_descriptions", [true]]])
-      assert_string(result, "completion fish --no-descriptions")
-    end
-
-    # --- helm completion powershell ---
-
-    def test_helm_completion_powershell
-      result = sb { completion.powershell }
-      assert_buffer(result, [["completion", []], ["powershell", []]])
-      assert_string(result, "completion powershell")
-    end
-
-    def test_helm_completion_powershell_no_descriptions
-      result = sb { completion.powershell.no_descriptions(true) }
-      assert_buffer(result, [["completion", []], ["powershell", []], ["no_descriptions", [true]]])
-      assert_string(result, "completion powershell --no-descriptions")
-    end
-
-    # --- helm create ---
-
-    def test_helm_create_mychart
-      result = sb { create.mychart }
-      assert_buffer(result, [["create", []], ["mychart", []]])
-      assert_string(result, "create mychart")
-    end
-
-    def test_helm_create_mychart_starter
-      result = sb { create.mychart.p('my-starter') }
-      assert_buffer(result, [["create", []], ["mychart", []], ["p", ["my-starter"]]])
-      assert_string(result, "create mychart -p my-starter")
-    end
-
-    def test_helm_create_mychart_starter_long
-      result = sb { create.mychart.starter('my-starter') }
-      assert_buffer(result, [["create", []], ["mychart", []], ["starter", ["my-starter"]]])
-      assert_string(result, "create mychart --starter=my-starter")
-    end
-
-    # --- helm dependency build ---
-
-    def test_helm_dependency_build
-      result = sb { dependency.build.("CHART") }
-      assert_buffer(result, [["dependency", []], ["build", []], ["CHART", []]])
-      assert_string(result, "dependency build CHART")
-    end
-
-    # --- helm dependency list ---
-
-    def test_helm_dependency_list
-      result = sb { dependency.list.("CHART") }
-      assert_buffer(result, [["dependency", []], ["list", []], ["CHART", []]])
-      assert_string(result, "dependency list CHART")
-    end
-
-    # --- helm dependency update ---
-
-    def test_helm_dependency_update
-      result = sb { dependency.update.("CHART") }
-      assert_buffer(result, [["dependency", []], ["update", []], ["CHART", []]])
-      assert_string(result, "dependency update CHART")
-    end
-
-    # --- helm env ---
-
-    def test_helm_env
-      result = sb { env }
-      assert_buffer(result, [["env", []]])
-      assert_string(result, "env")
-    end
-
-    # --- helm get all ---
-
-    def test_helm_get_all
-      result = sb { get.all.("RELEASE_NAME") }
-      assert_buffer(result, [["get", []], ["all", []], ["RELEASE_NAME", []]])
-      assert_string(result, "get all RELEASE_NAME")
-    end
-
-    # --- helm get hooks ---
-
-    def test_helm_get_hooks
-      result = sb { get.hooks.("RELEASE_NAME") }
-      assert_buffer(result, [["get", []], ["hooks", []], ["RELEASE_NAME", []]])
-      assert_string(result, "get hooks RELEASE_NAME")
-    end
-
-    # --- helm get manifest ---
-
-    def test_helm_get_manifest
-      result = sb { get.manifest.("RELEASE_NAME") }
-      assert_buffer(result, [["get", []], ["manifest", []], ["RELEASE_NAME", []]])
-      assert_string(result, "get manifest RELEASE_NAME")
-    end
-
-    # --- helm get metadata ---
-
-    def test_helm_get_metadata
-      result = sb { get.metadata.("RELEASE_NAME") }
-      assert_buffer(result, [["get", []], ["metadata", []], ["RELEASE_NAME", []]])
-      assert_string(result, "get metadata RELEASE_NAME")
-    end
-
-    # --- helm get notes ---
-
-    def test_helm_get_notes
-      result = sb { get.notes.("RELEASE_NAME") }
-      assert_buffer(result, [["get", []], ["notes", []], ["RELEASE_NAME", []]])
-      assert_string(result, "get notes RELEASE_NAME")
-    end
-
-    # --- helm get values ---
-
-    def test_helm_get_values
-      result = sb { get.values.("RELEASE_NAME") }
-      assert_buffer(result, [["get", []], ["values", []], ["RELEASE_NAME", []]])
-      assert_string(result, "get values RELEASE_NAME")
-    end
-
-    # --- helm history ---
-
-    def test_helm_history
-      result = sb { history.("RELEASE_NAME") }
-      assert_buffer(result, [["history", []], ["RELEASE_NAME", []]])
-      assert_string(result, "history RELEASE_NAME")
-    end
-
-    def test_helm_history_angry_bird
-      result = sb { history.angry-bird }
-      assert_buffer(result, [["history", []], ["angry", []], :dash, ["bird", []]])
-      assert_string(result, "history angry-bird")
-    end
-
-    # --- helm install ---
-
-    def test_helm_install_f_myvalues_yaml_myredis_redis
-      result = sb { install.f('myvalues.yaml').myredis.("./redis") }
-      assert_buffer(result, [["install", []], ["f", ["myvalues.yaml"]], ["myredis", []], ["./redis", []]])
-      assert_string(result, "install -f myvalues.yaml myredis ./redis")
-    end
-
-    def test_helm_install_set_name_prod_myredis_redis
-      result = sb { install.set('name=prod').myredis.("./redis") }
-      assert_buffer(result, [["install", []], ["set", ["name=prod"]], ["myredis", []], ["./redis", []]])
-      assert_string(result, "install --set=name=prod myredis ./redis")
-    end
-
-    def test_helm_install_set_string_long_int_myredis_redis
-      result = sb { install.set_string('long_int=1234567890').myredis.("./redis") }
-      assert_buffer(result, [["install", []], ["set_string", ["long_int=1234567890"]], ["myredis", []], ["./redis", []]])
-      assert_string(result, "install --set-string=long_int=1234567890 myredis ./redis")
-    end
-
-    def test_helm_install_set_file_my_script_myredis_redis
-      result = sb { install.set_file('my_script=dothings.sh').myredis.("./redis") }
-      assert_buffer(result, [["install", []], ["set_file", ["my_script=dothings.sh"]], ["myredis", []], ["./redis", []]])
-      assert_string(result, "install --set-file=my_script=dothings.sh myredis ./redis")
-    end
-
-    def test_helm_install_f_myvalues_yaml_f_override_yaml_myredis_redis
-      result = sb { install.f('myvalues.yaml').f('override.yaml').myredis.("./redis") }
-      assert_buffer(result, [["install", []], ["f", ["myvalues.yaml"]], ["f", ["override.yaml"]], ["myredis", []], ["./redis", []]])
-      assert_string(result, "install -f myvalues.yaml -f override.yaml myredis ./redis")
-    end
-
-    def test_helm_install_set_foo_bar_set_foo_newbar_myredis_redis
-      result = sb { install.set('foo=bar').set('foo=newbar').myredis.("./redis") }
-      assert_buffer(result, [["install", []], ["set", ["foo=bar"]], ["set", ["foo=newbar"]], ["myredis", []], ["./redis", []]])
-      assert_string(result, "install --set=foo=bar --set=foo=newbar myredis ./redis")
-    end
-
-    def test_helm_install_mymaria_example_mariadb
-      result = sb { install.mymaria.("example/mariadb") }
-      assert_buffer(result, [["install", []], ["mymaria", []], ["example/mariadb", []]])
-      assert_string(result, "install mymaria example/mariadb")
-    end
-
-    def test_helm_install_mynginx_tgz
-      result = sb { install.mynginx.("./nginx-1.2.3.tgz") }
-      assert_buffer(result, [["install", []], ["mynginx", []], ["./nginx-1.2.3.tgz", []]])
-      assert_string(result, "install mynginx ./nginx-1.2.3.tgz")
-    end
-
-    def test_helm_install_mynginx_local_dir
-      result = sb { install.mynginx.("./nginx") }
-      assert_buffer(result, [["install", []], ["mynginx", []], ["./nginx", []]])
-      assert_string(result, "install mynginx ./nginx")
-    end
-
-    def test_helm_install_mynginx_url
-      result = sb { install.mynginx.("https://example.com/charts/nginx-1.2.3.tgz") }
-      assert_buffer(result, [["install", []], ["mynginx", []], ["https://example.com/charts/nginx-1.2.3.tgz", []]])
-      assert_string(result, "install mynginx https://example.com/charts/nginx-1.2.3.tgz")
-    end
-
-    def test_helm_install_repo_mynginx_nginx
-      result = sb { install.repo('https://example.com/charts/').mynginx.nginx }
-      assert_buffer(result, [["install", []], ["repo", ["https://example.com/charts/"]], ["mynginx", []], ["nginx", []]])
-      assert_string(result, "install --repo=https://example.com/charts/ mynginx nginx")
-    end
-
-    def test_helm_install_mynginx_version_oci
-      result = sb { install.mynginx.version('1.2.3').("oci://example.com/charts/nginx") }
-      assert_buffer(result, [["install", []], ["mynginx", []], ["version", ["1.2.3"]], ["oci://example.com/charts/nginx", []]])
-      assert_string(result, "install mynginx --version=1.2.3 oci://example.com/charts/nginx")
-    end
-
-    # --- helm lint ---
-
-    def test_helm_lint
-      result = sb { lint.("PATH") }
-      assert_buffer(result, [["lint", []], ["PATH", []]])
-      assert_string(result, "lint PATH")
-    end
-
-    # --- helm list ---
-
-    def test_helm_list
-      result = sb { list }
-      assert_buffer(result, [["list", []]])
-      assert_string(result, "list")
-    end
-
-    def test_helm_list_filter
-      result = sb { list.filter('ara[a-z]+') }
-      assert_buffer(result, [["list", []], ["filter", ["ara[a-z]+"]]])
-      assert_string(result, "list --filter=ara[a-z]+")
-    end
-
-    # --- helm package ---
-
-    def test_helm_package
-      result = sb { package.("./mychart") }
-      assert_buffer(result, [["package", []], ["./mychart", []]])
-      assert_string(result, "package ./mychart")
-    end
-
-    def test_helm_package_sign
-      result = sb { package.sign(true).("./mychart").key('mykey').keyring('~/.gnupg/secring.gpg') }
-      assert_buffer(result, [["package", []], ["sign", [true]], ["./mychart", []], ["key", ["mykey"]], ["keyring", ["~/.gnupg/secring.gpg"]]])
-      assert_string(result, "package --sign ./mychart --key=mykey --keyring=~/.gnupg/secring.gpg")
-    end
-
-    # --- helm plugin install ---
-
-    def test_helm_plugin_install
-      result = sb { plugin.install.("https://example.com/plugin") }
-      assert_buffer(result, [["plugin", []], ["install", []], ["https://example.com/plugin", []]])
-      assert_string(result, "plugin install https://example.com/plugin")
-    end
-
-    # --- helm plugin list ---
-
-    def test_helm_plugin_list
-      result = sb { plugin.list }
-      assert_buffer(result, [["plugin", []], ["list", []]])
-      assert_string(result, "plugin list")
-    end
-
-    # --- helm plugin package ---
-
-    def test_helm_plugin_package
-      result = sb { plugin.package.("PATH") }
-      assert_buffer(result, [["plugin", []], ["package", []], ["PATH", []]])
-      assert_string(result, "plugin package PATH")
-    end
-
-    # --- helm plugin uninstall ---
-
-    def test_helm_plugin_uninstall
-      result = sb { plugin.uninstall.("my-plugin") }
-      assert_buffer(result, [["plugin", []], ["uninstall", []], ["my-plugin", []]])
-      assert_string(result, "plugin uninstall my-plugin")
-    end
-
-    # --- helm plugin update ---
-
-    def test_helm_plugin_update
-      result = sb { plugin.update.("my-plugin") }
-      assert_buffer(result, [["plugin", []], ["update", []], ["my-plugin", []]])
-      assert_string(result, "plugin update my-plugin")
-    end
-
-    # --- helm plugin verify ---
-
-    def test_helm_plugin_verify
-      result = sb { plugin.verify.("PATH") }
-      assert_buffer(result, [["plugin", []], ["verify", []], ["PATH", []]])
-      assert_string(result, "plugin verify PATH")
-    end
-
-    def test_helm_plugin_verify_example
-      result = sb { plugin.verify.("~/.local/share/helm/plugins/example-cli") }
-      assert_buffer(result, [["plugin", []], ["verify", []], ["~/.local/share/helm/plugins/example-cli", []]])
-      assert_string(result, "plugin verify ~/.local/share/helm/plugins/example-cli")
-    end
-
-    # --- helm pull ---
-
-    def test_helm_pull
-      result = sb { pull.("repo/chartname") }
-      assert_buffer(result, [["pull", []], ["repo/chartname", []]])
-      assert_string(result, "pull repo/chartname")
-    end
-
-    # --- helm push ---
-
-    def test_helm_push
-      result = sb { push.("mychart-0.1.0.tgz").("oci://localhost:5000/helm-charts") }
-      assert_buffer(result, [["push", []], ["mychart-0.1.0.tgz", []], ["oci://localhost:5000/helm-charts", []]])
-      assert_string(result, "push mychart-0.1.0.tgz oci://localhost:5000/helm-charts")
-    end
-
-    # --- helm registry login ---
-
-    def test_helm_registry_login
-      result = sb { registry.login.("localhost:5000") }
-      assert_buffer(result, [["registry", []], ["login", []], ["localhost:5000", []]])
-      assert_string(result, "registry login localhost:5000")
-    end
-
-    # --- helm registry logout ---
-
-    def test_helm_registry_logout
-      result = sb { registry.logout.("localhost:5000") }
-      assert_buffer(result, [["registry", []], ["logout", []], ["localhost:5000", []]])
-      assert_string(result, "registry logout localhost:5000")
-    end
-
-    # --- helm repo add ---
-
-    def test_helm_repo_add
-      result = sb { repo.add.("bitnami").("https://charts.bitnami.com/bitnami") }
-      assert_buffer(result, [["repo", []], ["add", []], ["bitnami", []], ["https://charts.bitnami.com/bitnami", []]])
-      assert_string(result, "repo add bitnami https://charts.bitnami.com/bitnami")
-    end
-
-    # --- helm repo index ---
-
-    def test_helm_repo_index
-      result = sb { repo.index.("DIR") }
-      assert_buffer(result, [["repo", []], ["index", []], ["DIR", []]])
-      assert_string(result, "repo index DIR")
-    end
-
-    # --- helm repo list ---
-
-    def test_helm_repo_list
-      result = sb { repo.list }
-      assert_buffer(result, [["repo", []], ["list", []]])
-      assert_string(result, "repo list")
-    end
-
-    # --- helm repo remove ---
-
-    def test_helm_repo_remove
-      result = sb { repo.remove.("bitnami") }
-      assert_buffer(result, [["repo", []], ["remove", []], ["bitnami", []]])
-      assert_string(result, "repo remove bitnami")
-    end
-
-    # --- helm repo update ---
-
-    def test_helm_repo_update
-      result = sb { repo.update }
-      assert_buffer(result, [["repo", []], ["update", []]])
-      assert_string(result, "repo update")
-    end
-
-    def test_helm_repo_update_with_name
-      result = sb { repo.update.("my-repo") }
-      assert_buffer(result, [["repo", []], ["update", []], ["my-repo", []]])
-      assert_string(result, "repo update my-repo")
-    end
-
-    # --- helm rollback ---
-
-    def test_helm_rollback
-      result = sb { rollback.("my-release").("2") }
-      assert_buffer(result, [["rollback", []], ["my-release", []], ["2", []]])
-      assert_string(result, "rollback my-release 2")
-    end
-
-    # --- helm search hub ---
-
-    def test_helm_search_hub
-      result = sb { search.hub.("nginx") }
-      assert_buffer(result, [["search", []], ["hub", []], ["nginx", []]])
-      assert_string(result, "search hub nginx")
-    end
-
-    # --- helm search repo ---
-
-    def test_helm_search_repo
-      result = sb { search.repo.("nginx") }
-      assert_buffer(result, [["search", []], ["repo", []], ["nginx", []]])
-      assert_string(result, "search repo nginx")
-    end
-
-    def test_helm_search_repo_devel
-      result = sb { search.repo.("nginx").devel(true) }
-      assert_buffer(result, [["search", []], ["repo", []], ["nginx", []], ["devel", [true]]])
-      assert_string(result, "search repo nginx --devel")
-    end
-
-    def test_helm_search_repo_version
-      result = sb { search.repo.("nginx-ingress").version('^1.0.0') }
-      assert_buffer(result, [["search", []], ["repo", []], ["nginx-ingress", []], ["version", ["^1.0.0"]]])
-      assert_string(result, "search repo nginx-ingress --version=^1.0.0")
-    end
-
-    # --- helm show all ---
-
-    def test_helm_show_all
-      result = sb { show.all.("bitnami/nginx") }
-      assert_buffer(result, [["show", []], ["all", []], ["bitnami/nginx", []]])
-      assert_string(result, "show all bitnami/nginx")
-    end
-
-    # --- helm show chart ---
-
-    def test_helm_show_chart
-      result = sb { show.chart.("bitnami/nginx") }
-      assert_buffer(result, [["show", []], ["chart", []], ["bitnami/nginx", []]])
-      assert_string(result, "show chart bitnami/nginx")
-    end
-
-    # --- helm show crds ---
-
-    def test_helm_show_crds
-      result = sb { show.crds.("bitnami/nginx") }
-      assert_buffer(result, [["show", []], ["crds", []], ["bitnami/nginx", []]])
-      assert_string(result, "show crds bitnami/nginx")
-    end
-
-    # --- helm show readme ---
-
-    def test_helm_show_readme
-      result = sb { show.readme.("bitnami/nginx") }
-      assert_buffer(result, [["show", []], ["readme", []], ["bitnami/nginx", []]])
-      assert_string(result, "show readme bitnami/nginx")
-    end
-
-    # --- helm show values ---
-
-    def test_helm_show_values
-      result = sb { show.values.("bitnami/nginx") }
-      assert_buffer(result, [["show", []], ["values", []], ["bitnami/nginx", []]])
-      assert_string(result, "show values bitnami/nginx")
-    end
-
-    # --- helm status ---
-
-    def test_helm_status
-      result = sb { status.("RELEASE_NAME") }
-      assert_buffer(result, [["status", []], ["RELEASE_NAME", []]])
-      assert_string(result, "status RELEASE_NAME")
-    end
-
-    # --- helm template ---
-
-    def test_helm_template
-      result = sb { template.my_release.("bitnami/nginx") }
-      assert_buffer(result, [["template", []], ["my_release", []], ["bitnami/nginx", []]])
-      assert_string(result, "template my_release bitnami/nginx")
-    end
-
-    def test_helm_template_api_versions
-      result = sb { template.api_versions('networking.k8s.io/v1').api_versions('cert-manager.io/v1').mychart.("./mychart") }
-      assert_buffer(result, [["template", []], ["api_versions", ["networking.k8s.io/v1"]], ["api_versions", ["cert-manager.io/v1"]], ["mychart", []], ["./mychart", []]])
-      assert_string(result, "template --api-versions=networking.k8s.io/v1 --api-versions=cert-manager.io/v1 mychart ./mychart")
-    end
-
-    def test_helm_template_api_versions_comma
-      result = sb { template.api_versions('networking.k8s.io/v1', 'cert-manager.io/v1').mychart.("./mychart") }
-      assert_buffer(result, [["template", []], ["api_versions", ["networking.k8s.io/v1", "cert-manager.io/v1"]], ["mychart", []], ["./mychart", []]])
-      assert_string(result, "template --api-versions=networking.k8s.io/v1,cert-manager.io/v1 mychart ./mychart")
-    end
-
-    # --- helm test ---
-
-    def test_helm_test
-      result = sb { test.("RELEASE") }
-      assert_buffer(result, [["test", []], ["RELEASE", []]])
-      assert_string(result, "test RELEASE")
-    end
-
-    # --- helm uninstall ---
-
-    def test_helm_uninstall
-      result = sb { uninstall.("RELEASE_NAME") }
-      assert_buffer(result, [["uninstall", []], ["RELEASE_NAME", []]])
-      assert_string(result, "uninstall RELEASE_NAME")
-    end
-
-    # --- helm upgrade ---
-
-    def test_helm_upgrade_f_myvalues_yaml_f_override_yaml_redis
-      result = sb { upgrade.f('myvalues.yaml').f('override.yaml').redis.("./redis") }
-      assert_buffer(result, [["upgrade", []], ["f", ["myvalues.yaml"]], ["f", ["override.yaml"]], ["redis", []], ["./redis", []]])
-      assert_string(result, "upgrade -f myvalues.yaml -f override.yaml redis ./redis")
-    end
-
-    def test_helm_upgrade_set_foo_bar_set_foo_newbar_redis
-      result = sb { upgrade.set('foo=bar').set('foo=newbar').redis.("./redis") }
-      assert_buffer(result, [["upgrade", []], ["set", ["foo=bar"]], ["set", ["foo=newbar"]], ["redis", []], ["./redis", []]])
-      assert_string(result, "upgrade --set=foo=bar --set=foo=newbar redis ./redis")
-    end
-
-    def test_helm_upgrade_reuse_values_set_foo_bar_set_foo_newbar_redis
-      result = sb { upgrade.reuse_values(true).set('foo=bar').set('foo=newbar').redis.("./redis") }
-      assert_buffer(result, [["upgrade", []], ["reuse_values", [true]], ["set", ["foo=bar"]], ["set", ["foo=newbar"]], ["redis", []], ["./redis", []]])
-      assert_string(result, "upgrade --reuse-values --set=foo=bar --set=foo=newbar redis ./redis")
-    end
-
-    # --- helm verify ---
-
-    def test_helm_verify
-      result = sb { verify.("PATH") }
-      assert_buffer(result, [["verify", []], ["PATH", []]])
-      assert_string(result, "verify PATH")
-    end
-
-    # --- helm version ---
-
-    def test_helm_version
-      result = sb { version }
-      assert_buffer(result, [["version", []]])
-      assert_string(result, "version")
-    end
+  it "helm completion bash no descriptions" do
+    result = sb.call { completion.bash.no_descriptions(true) }
+    result.to_s.should == "completion bash --no-descriptions"
+  end
+
+  # --- helm completion zsh ---
+
+  it "helm completion zsh" do
+    result = sb.call { completion.zsh }
+    result.to_s.should == "completion zsh"
+  end
+
+  it "helm completion zsh no descriptions" do
+    result = sb.call { completion.zsh.no_descriptions(true) }
+    result.to_s.should == "completion zsh --no-descriptions"
+  end
+
+  # --- helm completion fish ---
+
+  it "helm completion fish" do
+    result = sb.call { completion.fish }
+    result.to_s.should == "completion fish"
+  end
+
+  it "helm completion fish no descriptions" do
+    result = sb.call { completion.fish.no_descriptions(true) }
+    result.to_s.should == "completion fish --no-descriptions"
+  end
+
+  # --- helm completion powershell ---
+
+  it "helm completion powershell" do
+    result = sb.call { completion.powershell }
+    result.to_s.should == "completion powershell"
+  end
+
+  it "helm completion powershell no descriptions" do
+    result = sb.call { completion.powershell.no_descriptions(true) }
+    result.to_s.should == "completion powershell --no-descriptions"
+  end
+
+  # --- helm create ---
+
+  it "helm create mychart" do
+    result = sb.call { create.mychart }
+    result.to_s.should == "create mychart"
+  end
+
+  it "helm create mychart starter" do
+    result = sb.call { create.mychart.p('my-starter') }
+    result.to_s.should == "create mychart -p my-starter"
+  end
+
+  it "helm create mychart starter long" do
+    result = sb.call { create.mychart.starter('my-starter') }
+    result.to_s.should == "create mychart --starter=my-starter"
+  end
+
+  # --- helm dependency build ---
+
+  it "helm dependency build" do
+    result = sb.call { dependency.build.("CHART") }
+    result.to_s.should == "dependency build CHART"
+  end
+
+  # --- helm dependency list ---
+
+  it "helm dependency list" do
+    result = sb.call { dependency.list.("CHART") }
+    result.to_s.should == "dependency list CHART"
+  end
+
+  # --- helm dependency update ---
+
+  it "helm dependency update" do
+    result = sb.call { dependency.update.("CHART") }
+    result.to_s.should == "dependency update CHART"
+  end
+
+  # --- helm env ---
+
+  it "helm env" do
+    result = sb.call { env }
+    result.to_s.should == "env"
+  end
+
+  # --- helm get all ---
+
+  it "helm get all" do
+    result = sb.call { get.all.("RELEASE_NAME") }
+    result.to_s.should == "get all RELEASE_NAME"
+  end
+
+  # --- helm get hooks ---
+
+  it "helm get hooks" do
+    result = sb.call { get.hooks.("RELEASE_NAME") }
+    result.to_s.should == "get hooks RELEASE_NAME"
+  end
+
+  # --- helm get manifest ---
+
+  it "helm get manifest" do
+    result = sb.call { get.manifest.("RELEASE_NAME") }
+    result.to_s.should == "get manifest RELEASE_NAME"
+  end
+
+  # --- helm get metadata ---
+
+  it "helm get metadata" do
+    result = sb.call { get.metadata.("RELEASE_NAME") }
+    result.to_s.should == "get metadata RELEASE_NAME"
+  end
+
+  # --- helm get notes ---
+
+  it "helm get notes" do
+    result = sb.call { get.notes.("RELEASE_NAME") }
+    result.to_s.should == "get notes RELEASE_NAME"
+  end
+
+  # --- helm get values ---
+
+  it "helm get values" do
+    result = sb.call { get.values.("RELEASE_NAME") }
+    result.to_s.should == "get values RELEASE_NAME"
+  end
+
+  # --- helm history ---
+
+  it "helm history" do
+    result = sb.call { history.("RELEASE_NAME") }
+    result.to_s.should == "history RELEASE_NAME"
+  end
+
+  it "helm history angry bird" do
+    result = sb.call { history.angry-bird }
+    result.to_s.should == "history angry-bird"
+  end
+
+  # --- helm install ---
+
+  it "helm install f myvalues yaml myredis redis" do
+    result = sb.call { install.f('myvalues.yaml').myredis.("./redis") }
+    result.to_s.should == "install -f myvalues.yaml myredis ./redis"
+  end
+
+  it "helm install set name prod myredis redis" do
+    result = sb.call { install.set('name=prod').myredis.("./redis") }
+    result.to_s.should == "install --set=name=prod myredis ./redis"
+  end
+
+  it "helm install set string long int myredis redis" do
+    result = sb.call { install.set_string('long_int=1234567890').myredis.("./redis") }
+    result.to_s.should == "install --set-string=long_int=1234567890 myredis ./redis"
+  end
+
+  it "helm install set file my script myredis redis" do
+    result = sb.call { install.set_file('my_script=dothings.sh').myredis.("./redis") }
+    result.to_s.should == "install --set-file=my_script=dothings.sh myredis ./redis"
+  end
+
+  it "helm install f myvalues yaml f override yaml myredis redis" do
+    result = sb.call { install.f('myvalues.yaml').f('override.yaml').myredis.("./redis") }
+    result.to_s.should == "install -f myvalues.yaml -f override.yaml myredis ./redis"
+  end
+
+  it "helm install set foo bar set foo newbar myredis redis" do
+    result = sb.call { install.set('foo=bar').set('foo=newbar').myredis.("./redis") }
+    result.to_s.should == "install --set=foo=bar --set=foo=newbar myredis ./redis"
+  end
+
+  it "helm install mymaria example mariadb" do
+    result = sb.call { install.mymaria.("example/mariadb") }
+    result.to_s.should == "install mymaria example/mariadb"
+  end
+
+  it "helm install mynginx tgz" do
+    result = sb.call { install.mynginx.("./nginx-1.2.3.tgz") }
+    result.to_s.should == "install mynginx ./nginx-1.2.3.tgz"
+  end
+
+  it "helm install mynginx local dir" do
+    result = sb.call { install.mynginx.("./nginx") }
+    result.to_s.should == "install mynginx ./nginx"
+  end
+
+  it "helm install mynginx url" do
+    result = sb.call { install.mynginx.("https://example.com/charts/nginx-1.2.3.tgz") }
+    result.to_s.should == "install mynginx https://example.com/charts/nginx-1.2.3.tgz"
+  end
+
+  it "helm install repo mynginx nginx" do
+    result = sb.call { install.repo('https://example.com/charts/').mynginx.nginx }
+    result.to_s.should == "install --repo=https://example.com/charts/ mynginx nginx"
+  end
+
+  it "helm install mynginx version oci" do
+    result = sb.call { install.mynginx.version('1.2.3').("oci://example.com/charts/nginx") }
+    result.to_s.should == "install mynginx --version=1.2.3 oci://example.com/charts/nginx"
+  end
+
+  # --- helm lint ---
+
+  it "helm lint" do
+    result = sb.call { lint.("PATH") }
+    result.to_s.should == "lint PATH"
+  end
+
+  # --- helm list ---
+
+  it "helm list" do
+    result = sb.call { list }
+    result.to_s.should == "list"
+  end
+
+  it "helm list filter" do
+    result = sb.call { list.filter('ara[a-z]+') }
+    result.to_s.should == "list --filter=ara[a-z]+"
+  end
+
+  # --- helm package ---
+
+  it "helm package" do
+    result = sb.call { package.("./mychart") }
+    result.to_s.should == "package ./mychart"
+  end
+
+  it "helm package sign" do
+    result = sb.call { package.sign(true).("./mychart").key('mykey').keyring('~/.gnupg/secring.gpg') }
+    result.to_s.should == "package --sign ./mychart --key=mykey --keyring=~/.gnupg/secring.gpg"
+  end
+
+  # --- helm plugin install ---
+
+  it "helm plugin install" do
+    result = sb.call { plugin.install.("https://example.com/plugin") }
+    result.to_s.should == "plugin install https://example.com/plugin"
+  end
+
+  # --- helm plugin list ---
+
+  it "helm plugin list" do
+    result = sb.call { plugin.list }
+    result.to_s.should == "plugin list"
+  end
+
+  # --- helm plugin package ---
+
+  it "helm plugin package" do
+    result = sb.call { plugin.package.("PATH") }
+    result.to_s.should == "plugin package PATH"
+  end
+
+  # --- helm plugin uninstall ---
+
+  it "helm plugin uninstall" do
+    result = sb.call { plugin.uninstall.("my-plugin") }
+    result.to_s.should == "plugin uninstall my-plugin"
+  end
+
+  # --- helm plugin update ---
+
+  it "helm plugin update" do
+    result = sb.call { plugin.update.("my-plugin") }
+    result.to_s.should == "plugin update my-plugin"
+  end
+
+  # --- helm plugin verify ---
+
+  it "helm plugin verify" do
+    result = sb.call { plugin.verify.("PATH") }
+    result.to_s.should == "plugin verify PATH"
+  end
+
+  it "helm plugin verify example" do
+    result = sb.call { plugin.verify.("~/.local/share/helm/plugins/example-cli") }
+    result.to_s.should == "plugin verify ~/.local/share/helm/plugins/example-cli"
+  end
+
+  # --- helm pull ---
+
+  it "helm pull" do
+    result = sb.call { pull.("repo/chartname") }
+    result.to_s.should == "pull repo/chartname"
+  end
+
+  # --- helm push ---
+
+  it "helm push" do
+    result = sb.call { push.("mychart-0.1.0.tgz").("oci://localhost:5000/helm-charts") }
+    result.to_s.should == "push mychart-0.1.0.tgz oci://localhost:5000/helm-charts"
+  end
+
+  # --- helm registry login ---
+
+  it "helm registry login" do
+    result = sb.call { registry.login.("localhost:5000") }
+    result.to_s.should == "registry login localhost:5000"
+  end
+
+  # --- helm registry logout ---
+
+  it "helm registry logout" do
+    result = sb.call { registry.logout.("localhost:5000") }
+    result.to_s.should == "registry logout localhost:5000"
+  end
+
+  # --- helm repo add ---
+
+  it "helm repo add" do
+    result = sb.call { repo.add.("bitnami").("https://charts.bitnami.com/bitnami") }
+    result.to_s.should == "repo add bitnami https://charts.bitnami.com/bitnami"
+  end
+
+  # --- helm repo index ---
+
+  it "helm repo index" do
+    result = sb.call { repo.index.("DIR") }
+    result.to_s.should == "repo index DIR"
+  end
+
+  # --- helm repo list ---
+
+  it "helm repo list" do
+    result = sb.call { repo.list }
+    result.to_s.should == "repo list"
+  end
+
+  # --- helm repo remove ---
+
+  it "helm repo remove" do
+    result = sb.call { repo.remove.("bitnami") }
+    result.to_s.should == "repo remove bitnami"
+  end
+
+  # --- helm repo update ---
+
+  it "helm repo update" do
+    result = sb.call { repo.update }
+    result.to_s.should == "repo update"
+  end
+
+  it "helm repo update with name" do
+    result = sb.call { repo.update.("my-repo") }
+    result.to_s.should == "repo update my-repo"
+  end
+
+  # --- helm rollback ---
+
+  it "helm rollback" do
+    result = sb.call { rollback.("my-release").("2") }
+    result.to_s.should == "rollback my-release 2"
+  end
+
+  # --- helm search hub ---
+
+  it "helm search hub" do
+    result = sb.call { search.hub.("nginx") }
+    result.to_s.should == "search hub nginx"
+  end
+
+  # --- helm search repo ---
+
+  it "helm search repo" do
+    result = sb.call { search.repo.("nginx") }
+    result.to_s.should == "search repo nginx"
+  end
+
+  it "helm search repo devel" do
+    result = sb.call { search.repo.("nginx").devel(true) }
+    result.to_s.should == "search repo nginx --devel"
+  end
+
+  it "helm search repo version" do
+    result = sb.call { search.repo.("nginx-ingress").version('^1.0.0') }
+    result.to_s.should == "search repo nginx-ingress --version=^1.0.0"
+  end
+
+  # --- helm show all ---
+
+  it "helm show all" do
+    result = sb.call { show.all.("bitnami/nginx") }
+    result.to_s.should == "show all bitnami/nginx"
+  end
+
+  # --- helm show chart ---
+
+  it "helm show chart" do
+    result = sb.call { show.chart.("bitnami/nginx") }
+    result.to_s.should == "show chart bitnami/nginx"
+  end
+
+  # --- helm show crds ---
+
+  it "helm show crds" do
+    result = sb.call { show.crds.("bitnami/nginx") }
+    result.to_s.should == "show crds bitnami/nginx"
+  end
+
+  # --- helm show readme ---
+
+  it "helm show readme" do
+    result = sb.call { show.readme.("bitnami/nginx") }
+    result.to_s.should == "show readme bitnami/nginx"
+  end
+
+  # --- helm show values ---
+
+  it "helm show values" do
+    result = sb.call { show.values.("bitnami/nginx") }
+    result.to_s.should == "show values bitnami/nginx"
+  end
+
+  # --- helm status ---
+
+  it "helm status" do
+    result = sb.call { status.("RELEASE_NAME") }
+    result.to_s.should == "status RELEASE_NAME"
+  end
+
+  # --- helm template ---
+
+  it "helm template" do
+    result = sb.call { template.my_release.("bitnami/nginx") }
+    result.to_s.should == "template my_release bitnami/nginx"
+  end
+
+  it "helm template api versions" do
+    result = sb.call { template.api_versions('networking.k8s.io/v1').api_versions('cert-manager.io/v1').mychart.("./mychart") }
+    result.to_s.should == "template --api-versions=networking.k8s.io/v1 --api-versions=cert-manager.io/v1 mychart ./mychart"
+  end
+
+  it "helm template api versions comma" do
+    result = sb.call { template.api_versions('networking.k8s.io/v1', 'cert-manager.io/v1').mychart.("./mychart") }
+    result.to_s.should == "template --api-versions=networking.k8s.io/v1,cert-manager.io/v1 mychart ./mychart"
+  end
+
+  # --- helm test ---
+
+  it "helm test" do
+    result = sb.call { test.("RELEASE") }
+    result.to_s.should == "test RELEASE"
+  end
+
+  # --- helm uninstall ---
+
+  it "helm uninstall" do
+    result = sb.call { uninstall.("RELEASE_NAME") }
+    result.to_s.should == "uninstall RELEASE_NAME"
+  end
+
+  # --- helm upgrade ---
+
+  it "helm upgrade f myvalues yaml f override yaml redis" do
+    result = sb.call { upgrade.f('myvalues.yaml').f('override.yaml').redis.("./redis") }
+    result.to_s.should == "upgrade -f myvalues.yaml -f override.yaml redis ./redis"
+  end
+
+  it "helm upgrade set foo bar set foo newbar redis" do
+    result = sb.call { upgrade.set('foo=bar').set('foo=newbar').redis.("./redis") }
+    result.to_s.should == "upgrade --set=foo=bar --set=foo=newbar redis ./redis"
+  end
+
+  it "helm upgrade reuse values set foo bar set foo newbar redis" do
+    result = sb.call { upgrade.reuse_values(true).set('foo=bar').set('foo=newbar').redis.("./redis") }
+    result.to_s.should == "upgrade --reuse-values --set=foo=bar --set=foo=newbar redis ./redis"
+  end
+
+  # --- helm verify ---
+
+  it "helm verify" do
+    result = sb.call { verify.("PATH") }
+    result.to_s.should == "verify PATH"
+  end
+
+  # --- helm version ---
+
+  it "helm version" do
+    result = sb.call { version }
+    result.to_s.should == "version"
   end
 end

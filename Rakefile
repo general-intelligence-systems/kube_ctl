@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 task :test do
-  Dir["lib/**/*.rb"].sort.each do |f|
-    sh "ruby", "-I", "lib", "-rminitest/autorun", "-rkube/ctl", f
-  end
+  sh "bundle", "exec", "scampi"
 end
 
 task default: :test

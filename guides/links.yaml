@@ -1,0 +1,12 @@
+getting-started:
+  order: 1
+dsl:
+  order: 2
+helm:
+  order: 3
+kubeconfig:
+  order: 4
+cli:
+  order: 5
+plugins:
+  order: 6

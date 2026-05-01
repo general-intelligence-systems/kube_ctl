@@ -23,13 +23,10 @@ module Kube
   end
 end
 
-if __FILE__ == $0
-  require "bundler/setup"
-  require "minitest/autorun"
+test do
+  require_relative "../../setup"
 
-  class KubeCtlTest < Minitest::Test
-    def test_version
-      refute_nil Kube::Ctl::VERSION
-    end
+  it "version" do
+    Kube::Ctl::VERSION.should.not.be.nil
   end
 end
